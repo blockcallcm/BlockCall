@@ -67,9 +67,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.blockcall.R
 import com.blockcall.Setup
 import com.blockcall.Store
 
@@ -148,7 +150,7 @@ fun OnboardingScreen(store: Store, setup: Setup, onSetupChanged: () -> Unit) {
             modifier = Modifier.fillMaxWidth(),
         )
         Text(
-            "Paso ${index + 1} de ${steps.size}",
+            stringResource(R.string.ob_step, index + 1, steps.size),
             style = MaterialTheme.typography.labelMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.padding(top = 8.dp),
@@ -163,59 +165,44 @@ fun OnboardingScreen(store: Store, setup: Setup, onSetupChanged: () -> Unit) {
         ) {
             when (step) {
                 Step.WELCOME -> {
-                    Hero(Icons.Rounded.Shield, "Bienvenido a BlockCall", "Rechaza en silencio las llamadas de números que no conoces. Te tomará menos de un minuto configurarla.")
-                    Bullet(Icons.Rounded.BatteryChargingFull, "No gasta batería: Android la activa solo cuando entra una llamada")
-                    Bullet(Icons.Rounded.WifiOff, "No usa internet: tus contactos y tu historial nunca salen del teléfono")
-                    Bullet(Icons.Rounded.PhoneInTalk, "Tus contactos siempre pueden llamarte")
+                    Hero(Icons.Rounded.Shield, stringResource(R.string.ob_welcome_title), stringResource(R.string.ob_welcome_body))
+                    Bullet(Icons.Rounded.BatteryChargingFull, stringResource(R.string.ob_welcome_battery))
+                    Bullet(Icons.Rounded.WifiOff, stringResource(R.string.ob_welcome_offline))
+                    Bullet(Icons.Rounded.PhoneInTalk, stringResource(R.string.ob_welcome_contacts))
                 }
                 Step.ROLE -> {
-                    Hero(Icons.Rounded.PhoneDisabled, "Permitir filtrar llamadas", "Es el único permiso imprescindible: sin él BlockCall no puede rechazar llamadas.")
+                    Hero(Icons.Rounded.PhoneDisabled, stringResource(R.string.ob_role_title), stringResource(R.string.ob_role_body))
                     if (roleTries > 0 && !setup.hasRole) {
-                        Problem(
-                            if (roleTries >= 2) {
-                                "Android ya no muestra el aviso. Toca «Abrir ajustes» y elige BlockCall en «App de identificación de llamadas y spam»."
-                            } else {
-                                "No se concedió. Sin este permiso BlockCall no puede bloquear llamadas."
-                            },
-                        )
+                        Problem(stringResource(if (roleTries >= 2) R.string.ob_role_retry else R.string.ob_role_denied))
                     }
                     // Texto tal como lo muestra Android 16; otras versiones usan frases muy parecidas.
-                    Notice(
-                        "Lo que verás",
-                        "«¿Quieres establecer BlockCall como tu app de identificador de llamada y spam predeterminada?»\n\n" +
-                            "1. Si aparece una lista, marca «BlockCall» (no «Ninguna»).\n" +
-                            "2. Toca «Hacer predeterminada» (o «Establecer como predeterminada»).",
-                    )
-                    Bullet(Icons.Rounded.Info, "No reemplaza tu app de Teléfono: sigues llamando y contestando igual")
-                    Bullet(Icons.Rounded.WarningAmber, "Solo una app puede filtrar llamadas. Si usas Truecaller u otra parecida, dejará de hacerlo, y no debes devolverle el permiso")
+                    Notice(stringResource(R.string.ob_what_you_see), stringResource(R.string.ob_role_notice))
+                    Bullet(Icons.Rounded.Info, stringResource(R.string.ob_role_phone))
+                    Bullet(Icons.Rounded.WarningAmber, stringResource(R.string.ob_role_truecaller))
                 }
                 Step.CONTACTS -> {
-                    Hero(Icons.Rounded.Contacts, "Acceso a tus contactos", "Para dejar pasar siempre a las personas que tienes guardadas.")
-                    if (contactsDenied) {
-                        Problem("Sin este permiso no se filtra nada en el modo «Contactos». Puedes omitirlo y usar solo tu lista de Permitidos.")
-                    }
-                    Notice("Lo que verás", "«¿Permitir que BlockCall acceda a tus contactos?»\n\nToca «Permitir».")
-                    Bullet(Icons.Rounded.WifiOff, "BlockCall solo consulta si el número que llama es un contacto; no copia ni envía tu agenda")
+                    Hero(Icons.Rounded.Contacts, stringResource(R.string.ob_contacts_title), stringResource(R.string.ob_contacts_body))
+                    if (contactsDenied) Problem(stringResource(R.string.ob_contacts_denied))
+                    Notice(stringResource(R.string.ob_what_you_see), stringResource(R.string.ob_contacts_notice))
+                    Bullet(Icons.Rounded.WifiOff, stringResource(R.string.ob_contacts_private))
                 }
                 Step.NOTIFICATIONS -> {
-                    Hero(Icons.Rounded.NotificationsNone, "Aviso de llamadas bloqueadas", "Un único aviso silencioso, sin sonido ni vibración, que te dice cuántas llamadas se bloquearon.")
-                    Notice("Lo que verás", "«¿Permitir que BlockCall te envíe notificaciones?»\n\nToca «Permitir».")
+                    Hero(Icons.Rounded.NotificationsNone, stringResource(R.string.ob_notif_title), stringResource(R.string.ob_notif_body))
+                    Notice(stringResource(R.string.ob_what_you_see), stringResource(R.string.ob_notif_notice))
                 }
                 Step.MAKER -> {
                     val brand = Build.MANUFACTURER.replaceFirstChar { it.uppercase() }
-                    Hero(Icons.Rounded.RocketLaunch, "Ajuste de $brand", "Tu teléfono puede impedir que Android active BlockCall cuando entra una llamada.")
-                    Notice("Qué hacer", "1. Toca «Abrir ajustes».\n2. Busca «Inicio automático» (o «Autoinicio»).\n3. Actívalo para BlockCall y vuelve aquí.")
+                    Hero(Icons.Rounded.RocketLaunch, stringResource(R.string.ob_maker_title, brand), stringResource(R.string.ob_maker_body))
+                    Notice(stringResource(R.string.ob_how_to), stringResource(R.string.ob_maker_notice))
                 }
                 Step.DONE -> {
-                    Hero(Icons.Rounded.CheckCircle, "¡Todo listo!", "BlockCall quedará activa con esta configuración. Puedes cambiarla cuando quieras desde Inicio.")
-                    Bullet(Icons.Rounded.Shield, "Protección activa siempre (puedes poner un horario, p. ej. de 20:00 a 06:00)")
-                    Bullet(Icons.Rounded.Contacts, "Entran tus contactos y los números de la pestaña Permitidos")
-                    Bullet(Icons.Rounded.VisibilityOff, "Números ocultos o privados: bloqueados")
-                    Bullet(Icons.Rounded.Replay, "Si el mismo número insiste 2 veces en 3 minutos, la segunda entra (útil en emergencias)")
-                    Bullet(Icons.Rounded.NotificationsNone, "Aviso silencioso de cada llamada bloqueada")
-                    if (!setup.hasRole) {
-                        Problem("Aún falta permitir el filtro de llamadas: BlockCall no bloqueará nada hasta que lo concedas desde Inicio.")
-                    }
+                    Hero(Icons.Rounded.CheckCircle, stringResource(R.string.ob_done_title), stringResource(R.string.ob_done_body))
+                    Bullet(Icons.Rounded.Shield, stringResource(R.string.ob_done_always))
+                    Bullet(Icons.Rounded.Contacts, stringResource(R.string.who_contacts_body))
+                    Bullet(Icons.Rounded.VisibilityOff, stringResource(R.string.rule_hidden))
+                    Bullet(Icons.Rounded.Replay, stringResource(R.string.ob_done_repeat))
+                    Bullet(Icons.Rounded.NotificationsNone, stringResource(R.string.ob_done_notify))
+                    if (!setup.hasRole) Problem(stringResource(R.string.ob_done_missing_role))
                 }
             }
         }
@@ -223,36 +210,36 @@ fun OnboardingScreen(store: Store, setup: Setup, onSetupChanged: () -> Unit) {
         // Botones: acción principal + alternativa del paso.
         Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
             when (step) {
-                Step.WELCOME -> Primary("Empezar", ::next)
+                Step.WELCOME -> Primary(stringResource(R.string.ob_start), ::next)
                 Step.ROLE -> {
                     if (roleTries >= 2) {
-                        Primary("Abrir ajustes") { open(Intent(Settings.ACTION_MANAGE_DEFAULT_APPS_SETTINGS)) }
+                        Primary(stringResource(R.string.ob_open_settings)) { open(Intent(Settings.ACTION_MANAGE_DEFAULT_APPS_SETTINGS)) }
                     } else {
-                        Primary("Elegir BlockCall") {
+                        Primary(stringResource(R.string.ob_choose)) {
                             val rm = context.getSystemService(RoleManager::class.java)
                             roleLauncher.launch(rm.createRequestRoleIntent(RoleManager.ROLE_CALL_SCREENING))
                         }
                     }
-                    Secondary("Hacerlo después", ::next)
+                    Secondary(stringResource(R.string.ob_later), ::next)
                 }
                 Step.CONTACTS -> {
                     val blocked = contactsDenied && !activity.shouldShowRequestPermissionRationale(Manifest.permission.READ_CONTACTS)
                     if (blocked) {
-                        Primary("Abrir ajustes de la app") { open(appDetails(context.packageName)) }
+                        Primary(stringResource(R.string.ob_open_app_settings)) { open(appDetails(context.packageName)) }
                     } else {
-                        Primary("Permitir acceso") { contactsLauncher.launch(Manifest.permission.READ_CONTACTS) }
+                        Primary(stringResource(R.string.ob_allow_access)) { contactsLauncher.launch(Manifest.permission.READ_CONTACTS) }
                     }
-                    Secondary("Omitir", ::next)
+                    Secondary(stringResource(R.string.ob_skip), ::next)
                 }
                 Step.NOTIFICATIONS -> {
-                    Primary("Permitir avisos") { notificationsLauncher.launch(Manifest.permission.POST_NOTIFICATIONS) }
-                    Secondary("Omitir", ::next)
+                    Primary(stringResource(R.string.ob_allow_notifications)) { notificationsLauncher.launch(Manifest.permission.POST_NOTIFICATIONS) }
+                    Secondary(stringResource(R.string.ob_skip), ::next)
                 }
                 Step.MAKER -> {
-                    Primary("Abrir ajustes") { open(autostartIntent(maker, context.packageName)) }
-                    Secondary("Ya lo activé, continuar", ::next)
+                    Primary(stringResource(R.string.ob_open_settings)) { open(autostartIntent(maker, context.packageName)) }
+                    Secondary(stringResource(R.string.ob_autostart_done), ::next)
                 }
-                Step.DONE -> Primary("Empezar a usar BlockCall", store::finishOnboarding)
+                Step.DONE -> Primary(stringResource(R.string.ob_finish), store::finishOnboarding)
             }
         }
     }

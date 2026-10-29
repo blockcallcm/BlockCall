@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Pestañas -->
+    <string name="tab_home">Inicio</string>
+    <string name="tab_allowed">Permitidos</string>
+    <string name="tab_blocked">Bloqueadas</string>
+
+    <!-- Tarjeta de estado -->
+    <string name="status_off_title">Protección desactivada</string>
+    <string name="status_off_body">Todas las llamadas entran normalmente</string>
+    <string name="status_broken_title">Protección detenida</string>
+    <string name="status_active_title">Protección activa</string>
+    <string name="status_active_none">No entra ninguna llamada</string>
+    <string name="status_active_list">Solo entran los números de tu lista</string>
+    <string name="status_active_contacts">Solo entran tus contactos y permitidos</string>
+    <string name="status_waiting_title">En espera</string>
+    <string name="status_waiting_body">Se activará en el horario configurado</string>
+    <string name="status_setup_title">Falta configurar</string>
+    <string name="status_setup_body">Concede los permisos para empezar</string>
+    <string name="problem_no_role">BlockCall no es tu app de filtro de llamadas (quizá otra app lo tomó). Toca «Conceder»</string>
+    <string name="problem_no_contacts">Sin acceso a contactos: no se está filtrando ninguna llamada</string>
+
+    <!-- Tarjeta de permisos -->
+    <string name="setup_title">Permisos necesarios</string>
+    <string name="setup_role">• Elegir BlockCall como app de filtro de llamadas</string>
+    <string name="setup_contacts">• Acceso a contactos (para dejarlos pasar)</string>
+    <string name="action_grant">Conceder</string>
+
+    <!-- Inicio -->
+    <string name="when_title">¿Cuándo bloquear?</string>
+    <string name="when_always">Siempre</string>
+    <string name="when_schedule">Por horario</string>
+    <string name="time_from">Desde</string>
+    <string name="time_to">Hasta</string>
+    <string name="who_title">¿Quién puede llamarte?</string>
+    <string name="who_contacts">Contactos</string>
+    <string name="who_list">Mi lista</string>
+    <string name="who_none">Nadie</string>
+    <string name="who_none_body">No entra ninguna llamada: ni contactos, ni tu lista, ni insistentes</string>
+    <string name="who_list_empty">Tu lista está vacía: se bloquearán todas las llamadas</string>
+    <plurals name="who_list_body">
+        <item quantity="one">Solo entra el %d número de la pestaña Permitidos</item>
+        <item quantity="many">Solo entran los %d números de la pestaña Permitidos</item>
+        <item quantity="other">Solo entran los %d números de la pestaña Permitidos</item>
+    </plurals>
+    <string name="who_contacts_body">Entran tus contactos y los números de la pestaña Permitidos</string>
+    <string name="repeat_title">Permitir si insiste</string>
+    <string name="repeat_body">Si el mismo número llama 2 veces en menos de 3 minutos, la segunda llamada entra</string>
+    <string name="repeat_disabled">No aplica con «Nadie»: todas las llamadas se rechazan</string>
+    <string name="notify_title">Avisarme de bloqueos</string>
+    <string name="notify_body">Notificación silenciosa con las llamadas bloqueadas (sin sonido ni vibración)</string>
+    <string name="rules_title">Reglas</string>
+    <string name="rule_none">Ninguna llamada entra</string>
+    <string name="rule_list">Tus contactos NO entran si no están en la lista</string>
+    <string name="rule_contacts">Tus contactos siempre entran</string>
+    <plurals name="rule_allowed_count">
+        <item quantity="one">%d número en tu lista de permitidos</item>
+        <item quantity="many">%d números en tu lista de permitidos</item>
+        <item quantity="other">%d números en tu lista de permitidos</item>
+    </plurals>
+    <string name="rule_hidden">Números ocultos o privados: bloqueados</string>
+    <string name="rule_repeat">Llamadas insistentes: la segunda entra</string>
+    <plurals name="rule_blocked_count">
+        <item quantity="one">%d llamada bloqueada en el historial</item>
+        <item quantity="many">%d llamadas bloqueadas en el historial</item>
+        <item quantity="other">%d llamadas bloqueadas en el historial</item>
+    </plurals>
+    <string name="appearance_title">Apariencia</string>
+    <string name="theme_system">Sistema</string>
+    <string name="theme_light">Claro</string>
+    <string name="theme_dark">Oscuro</string>
+    <string name="dialog_block_from">Bloquear desde</string>
+    <string name="dialog_block_until">Bloquear hasta</string>
+    <string name="action_ok">Aceptar</string>
+    <string name="action_cancel">Cancelar</string>
+
+    <!-- Permitidos y Bloqueadas -->
+    <string name="allowed_subtitle">Números que siempre pueden llamarte</string>
+    <string name="allowed_empty_title">Tu lista está vacía</string>
+    <string name="allowed_empty_body">Agrega números de confianza a mano\no elígelos desde tus contactos.</string>
+    <string name="action_remove">Quitar</string>
+    <string name="action_from_contacts">Desde contactos</string>
+    <string name="action_add_number">Agregar número</string>
+    <string name="blocked_subtitle">Llamadas que BlockCall rechazó por ti</string>
+    <string name="action_clear_history">Borrar historial</string>
+    <string name="blocked_empty_title">Sin llamadas bloqueadas</string>
+    <string name="blocked_empty_body">Aquí verás los números que fueron rechazados.</string>
+    <string name="hidden_number">Número oculto</string>
+    <string name="action_allow">Permitir</string>
+    <string name="field_number">Número</string>
+    <string name="field_name">Nombre (opcional)</string>
+    <string name="action_save">Guardar</string>
+
+    <!-- Aviso silencioso -->
+    <string name="channel_name">Llamadas bloqueadas</string>
+    <string name="channel_description">Aviso silencioso de las llamadas que BlockCall rechazó</string>
+    <plurals name="notification_title">
+        <item quantity="one">%d llamada bloqueada</item>
+        <item quantity="many">%d llamadas bloqueadas</item>
+        <item quantity="other">%d llamadas bloqueadas</item>
+    </plurals>
+    <string name="notification_text">Última: %1$s · %2$s</string>
+
+    <!-- Asistente de primer inicio -->
+    <string name="ob_step">Paso %1$d de %2$d</string>
+    <string name="ob_welcome_title">Bienvenido a BlockCall</string>
+    <string name="ob_welcome_body">Rechaza en silencio las llamadas de números que no conoces. Te tomará menos de un minuto configurarla.</string>
+    <string name="ob_welcome_battery">No gasta batería: Android la activa solo cuando entra una llamada</string>
+    <string name="ob_welcome_offline">No usa internet: tus contactos y tu historial nunca salen del teléfono</string>
+    <string name="ob_welcome_contacts">Tus contactos siempre pueden llamarte</string>
+    <string name="ob_what_you_see">Lo que verás</string>
+    <string name="ob_role_title">Permitir filtrar llamadas</string>
+    <string name="ob_role_body">Es el único permiso imprescindible: sin él BlockCall no puede rechazar llamadas.</string>
+    <string name="ob_role_notice">«¿Quieres establecer BlockCall como tu app de identificador de llamada y spam predeterminada?»\n\n1. Si aparece una lista, marca «BlockCall» (no «Ninguna»).\n2. Toca «Hacer predeterminada» (o «Establecer como predeterminada»).</string>
+    <string name="ob_role_phone">No reemplaza tu app de Teléfono: sigues llamando y contestando igual</string>
+    <string name="ob_role_truecaller">Solo una app puede filtrar llamadas. Si usas Truecaller u otra parecida, dejará de hacerlo, y no debes devolverle el permiso</string>
+    <string name="ob_role_retry">Android ya no muestra el aviso. Toca «Abrir ajustes» y elige BlockCall en «App de identificación de llamadas y spam».</string>
+    <string name="ob_role_denied">No se concedió. Sin este permiso BlockCall no puede bloquear llamadas.</string>
+    <string name="ob_contacts_title">Acceso a tus contactos</string>
+    <string name="ob_contacts_body">Para dejar pasar siempre a las personas que tienes guardadas.</string>
+    <string name="ob_contacts_denied">Sin este permiso no se filtra nada en el modo «Contactos». Puedes omitirlo y usar solo tu lista de Permitidos.</string>
+    <string name="ob_contacts_notice">«¿Permitir que BlockCall acceda a tus contactos?»\n\nToca «Permitir».</string>
+    <string name="ob_contacts_private">BlockCall solo consulta si el número que llama es un contacto; no copia ni envía tu agenda</string>
+    <string name="ob_notif_title">Aviso de llamadas bloqueadas</string>
+    <string name="ob_notif_body">Un único aviso silencioso, sin sonido ni vibración, que te dice cuántas llamadas se bloquearon.</string>
+    <string name="ob_notif_notice">«¿Permitir que BlockCall te envíe notificaciones?»\n\nToca «Permitir».</string>
+    <string name="ob_maker_title">Ajuste de %s</string>
+    <string name="ob_maker_body">Tu teléfono puede impedir que Android active BlockCall cuando entra una llamada.</string>
+    <string name="ob_how_to">Qué hacer</string>
+    <string name="ob_maker_notice">1. Toca «Abrir ajustes».\n2. Busca «Inicio automático» (o «Autoinicio»).\n3. Actívalo para BlockCall y vuelve aquí.</string>
+    <string name="ob_done_title">¡Todo listo!</string>
+    <string name="ob_done_body">BlockCall quedará activa con esta configuración. Puedes cambiarla cuando quieras desde Inicio.</string>
+    <string name="ob_done_always">Protección activa siempre (puedes poner un horario, p. ej. de 20:00 a 06:00)</string>
+    <string name="ob_done_repeat">Si el mismo número insiste 2 veces en 3 minutos, la segunda entra (útil en emergencias)</string>
+    <string name="ob_done_notify">Aviso silencioso de cada llamada bloqueada</string>
+    <string name="ob_done_missing_role">Aún falta permitir el filtro de llamadas: BlockCall no bloqueará nada hasta que lo concedas desde Inicio.</string>
+    <string name="ob_start">Empezar</string>
+    <string name="ob_choose">Elegir BlockCall</string>
+    <string name="ob_later">Hacerlo después</string>
+    <string name="ob_open_settings">Abrir ajustes</string>
+    <string name="ob_open_app_settings">Abrir ajustes de la app</string>
+    <string name="ob_allow_access">Permitir acceso</string>
+    <string name="ob_skip">Omitir</string>
+    <string name="ob_allow_notifications">Permitir avisos</string>
+    <string name="ob_autostart_done">Ya lo activé, continuar</string>
+    <string name="ob_finish">Empezar a usar BlockCall</string>
+</resources>

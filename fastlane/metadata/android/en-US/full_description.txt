@@ -1,0 +1,36 @@
+BlockCall silently rejects incoming calls from numbers you don't know: they don't ring, don't vibrate and don't interrupt you. Your contacts can always reach you.
+
+<b>Who can call you?</b>
+<ul>
+<li><b>Contacts</b>: your contacts and the numbers on your Allowed list.</li>
+<li><b>My list</b>: only the numbers you choose.</li>
+<li><b>Nobody</b>: every call is rejected.</li>
+</ul>
+
+<b>Features</b>
+<ul>
+<li>Always on, or on a schedule (for example 20:00 to 06:00, across midnight).</li>
+<li>Hidden or private numbers are blocked.</li>
+<li>Allow if they insist: if the same number calls twice within 3 minutes, the second call rings (useful for emergencies).</li>
+<li>History of blocked calls, with a button to allow the number.</li>
+<li>A single silent notification summarizing blocked calls.</li>
+<li>Setup assistant that explains each Android permission step by step.</li>
+<li>Material You, light and dark themes.</li>
+</ul>
+
+<b>Light and private</b>
+<ul>
+<li>Uses Android's official call screening API (CallScreeningService): the system wakes the app only when a call arrives. Nothing runs in the background, so it doesn't drain the battery and task killers can't stop it.</li>
+<li>No internet permission: your contacts and history never leave the phone.</li>
+<li>No ads, no trackers. About 2 MB.</li>
+<li>If anything fails, the call goes through: you never miss a call from a contact.</li>
+</ul>
+
+<b>Permissions</b>
+<ul>
+<li><b>Caller ID &amp; spam app</b>: required to reject calls. It doesn't replace your Phone app. Only one app can hold this role at a time.</li>
+<li><b>Contacts</b>: to know whether the caller is a contact.</li>
+<li><b>Notifications</b> (optional): for the silent summary.</li>
+</ul>
+
+BlockCall only screens regular phone calls. It doesn't block SMS or WhatsApp/VoIP calls. Requires Android 10 or newer. Available in English and Spanish.

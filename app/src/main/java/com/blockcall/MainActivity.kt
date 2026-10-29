@@ -29,6 +29,7 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.blockcall.ui.AllowedScreen
 import com.blockcall.ui.BlockCallTheme
@@ -86,7 +87,7 @@ class MainActivity : ComponentActivity() {
                                             Icon(icon, contentDescription = null)
                                         }
                                     },
-                                    label = { Text(label) },
+                                    label = { Text(stringResource(label)) },
                                 )
                             }
                         }
@@ -137,9 +138,9 @@ class MainActivity : ComponentActivity() {
         const val TAB_BLOCKED = 2
 
         private val TABS = listOf(
-            "Inicio" to Icons.Rounded.Shield,
-            "Permitidos" to Icons.Rounded.Group,
-            "Bloqueadas" to Icons.Rounded.Block,
+            R.string.tab_home to Icons.Rounded.Shield,
+            R.string.tab_allowed to Icons.Rounded.Group,
+            R.string.tab_blocked to Icons.Rounded.Block,
         )
     }
 }

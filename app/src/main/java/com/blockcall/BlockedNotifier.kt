@@ -33,12 +33,12 @@ object BlockedNotifier {
 
         val manager = context.getSystemService(NotificationManager::class.java)
         manager.createNotificationChannel(
-            NotificationChannel(CHANNEL, "Llamadas bloqueadas", NotificationManager.IMPORTANCE_LOW).apply {
-                description = "Aviso silencioso de las llamadas que BlockCall rechazó"
+            NotificationChannel(CHANNEL, context.getString(R.string.channel_name), NotificationManager.IMPORTANCE_LOW).apply {
+                description = context.getString(R.string.channel_description)
             },
         )
 
-        val who = if (last.number == Store.HIDDEN) "Número oculto" else last.number
+        val who = if (last.number == Store.HIDDEN) context.getString(R.string.hidden_number) else last.number
         val time = DateFormat.getTimeFormat(context).format(Date(last.time))
         val open = PendingIntent.getActivity(
             context,
@@ -51,8 +51,8 @@ object BlockedNotifier {
 
         val notification = Notification.Builder(context, CHANNEL)
             .setSmallIcon(R.drawable.ic_stat_blocked)
-            .setContentTitle(if (unseen.size == 1) "1 llamada bloqueada" else "${unseen.size} llamadas bloqueadas")
-            .setContentText("Última: $who · $time")
+            .setContentTitle(context.resources.getQuantityString(R.plurals.notification_title, unseen.size, unseen.size))
+            .setContentText(context.getString(R.string.notification_text, who, time))
             .setNumber(unseen.size)
             .setContentIntent(open)
             .setAutoCancel(true)

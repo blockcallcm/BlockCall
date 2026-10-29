@@ -1,0 +1,1 @@
+Silently reject calls from numbers that aren't in your contacts

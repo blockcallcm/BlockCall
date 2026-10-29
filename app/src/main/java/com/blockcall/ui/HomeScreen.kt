@@ -60,12 +60,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.repeatOnLifecycle
+import com.blockcall.R
 import com.blockcall.Setup
 import com.blockcall.ALLOW_CONTACTS
 import com.blockcall.ALLOW_LIST
@@ -138,8 +141,8 @@ fun HomeScreen(store: Store, setup: Setup, onSetupChanged: () -> Unit, modifier:
             scheduled = settings.scheduled,
             allowMode = settings.allowMode,
             problem = when {
-                !setup.hasRole -> "BlockCall no es tu app de filtro de llamadas (quizá otra app lo tomó). Toca «Conceder»"
-                needsContacts && !setup.hasContacts -> "Sin acceso a contactos: no se está filtrando ninguna llamada"
+                !setup.hasRole -> stringResource(R.string.problem_no_role)
+                needsContacts && !setup.hasContacts -> stringResource(R.string.problem_no_contacts)
                 else -> null
             },
             onToggle = { on ->
@@ -153,58 +156,58 @@ fun HomeScreen(store: Store, setup: Setup, onSetupChanged: () -> Unit, modifier:
         }
 
         SectionCard {
-            Text("¿Cuándo bloquear?", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold)
+            Text(stringResource(R.string.when_title), style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold)
             Spacer(Modifier.height(12.dp))
             SingleChoiceSegmentedButtonRow(Modifier.fillMaxWidth()) {
-                listOf("Siempre", "Por horario").forEachIndexed { i, label ->
+                listOf(R.string.when_always, R.string.when_schedule).forEachIndexed { i, label ->
                     SegmentedButton(
                         selected = settings.scheduled == (i == 1),
                         onClick = { store.setScheduled(i == 1) },
                         shape = SegmentedButtonDefaults.itemShape(i, 2),
-                    ) { Text(label) }
+                    ) { Text(stringResource(label)) }
                 }
             }
             AnimatedVisibility(settings.scheduled) {
                 Row(Modifier.padding(top = 12.dp), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                    TimeTile("Desde", settings.startMinute, Icons.Rounded.Bedtime, Modifier.weight(1f)) { editing = true }
-                    TimeTile("Hasta", settings.endMinute, Icons.Rounded.WbSunny, Modifier.weight(1f)) { editing = false }
+                    TimeTile(stringResource(R.string.time_from), settings.startMinute, Icons.Rounded.Bedtime, Modifier.weight(1f)) { editing = true }
+                    TimeTile(stringResource(R.string.time_to), settings.endMinute, Icons.Rounded.WbSunny, Modifier.weight(1f)) { editing = false }
                 }
             }
         }
 
         SectionCard {
-            Text("¿Quién puede llamarte?", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold)
+            Text(stringResource(R.string.who_title), style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold)
             Spacer(Modifier.height(12.dp))
             SingleChoiceSegmentedButtonRow(Modifier.fillMaxWidth()) {
-                listOf(ALLOW_CONTACTS to "Contactos", ALLOW_LIST to "Mi lista", ALLOW_NONE to "Nadie").forEachIndexed { i, (mode, label) ->
+                listOf(
+                    ALLOW_CONTACTS to R.string.who_contacts,
+                    ALLOW_LIST to R.string.who_list,
+                    ALLOW_NONE to R.string.who_none,
+                ).forEachIndexed { i, (mode, label) ->
                     SegmentedButton(
                         selected = settings.allowMode == mode,
                         onClick = { store.setAllowMode(mode) },
                         shape = SegmentedButtonDefaults.itemShape(i, 3),
-                    ) { Text(label) }
+                    ) { Text(stringResource(label)) }
                 }
             }
             Spacer(Modifier.height(10.dp))
             val (modeIcon, modeText) = when (settings.allowMode) {
-                ALLOW_NONE -> Icons.Rounded.PhoneDisabled to "No entra ninguna llamada: ni contactos, ni tu lista, ni insistentes"
+                ALLOW_NONE -> Icons.Rounded.PhoneDisabled to stringResource(R.string.who_none_body)
                 ALLOW_LIST -> if (allowed.isEmpty()) {
-                    Icons.Rounded.WarningAmber to "Tu lista está vacía: se bloquearán todas las llamadas"
+                    Icons.Rounded.WarningAmber to stringResource(R.string.who_list_empty)
                 } else {
-                    Icons.Rounded.PlaylistAddCheck to "Solo entran los ${allowed.size} número(s) de la pestaña Permitidos"
+                    Icons.Rounded.PlaylistAddCheck to pluralStringResource(R.plurals.who_list_body, allowed.size, allowed.size)
                 }
-                else -> Icons.Rounded.Contacts to "Entran tus contactos y los números de la pestaña Permitidos"
+                else -> Icons.Rounded.Contacts to stringResource(R.string.who_contacts_body)
             }
             RuleRow(modeIcon, modeText)
         }
 
         ToggleCard(
             icon = Icons.Rounded.Replay,
-            title = "Permitir si insiste",
-            body = if (settings.allowMode == ALLOW_NONE) {
-                "No aplica con «Nadie»: todas las llamadas se rechazan"
-            } else {
-                "Si el mismo número llama 2 veces en menos de 3 minutos, la segunda llamada entra"
-            },
+            title = stringResource(R.string.repeat_title),
+            body = stringResource(if (settings.allowMode == ALLOW_NONE) R.string.repeat_disabled else R.string.repeat_body),
             checked = settings.allowRepeated && settings.allowMode != ALLOW_NONE,
             onCheckedChange = store::setAllowRepeated,
             enabled = settings.allowMode != ALLOW_NONE,
@@ -212,8 +215,8 @@ fun HomeScreen(store: Store, setup: Setup, onSetupChanged: () -> Unit, modifier:
 
         ToggleCard(
             icon = Icons.Rounded.NotificationsNone,
-            title = "Avisarme de bloqueos",
-            body = "Notificación silenciosa con las llamadas bloqueadas (sin sonido ni vibración)",
+            title = stringResource(R.string.notify_title),
+            body = stringResource(R.string.notify_body),
             checked = settings.notify && setup.hasNotifications,
             onCheckedChange = { on ->
                 if (on && !setup.hasNotifications) {
@@ -225,31 +228,35 @@ fun HomeScreen(store: Store, setup: Setup, onSetupChanged: () -> Unit, modifier:
         )
 
         SectionCard {
-            Text("Reglas", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold)
+            Text(stringResource(R.string.rules_title), style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold)
             Spacer(Modifier.height(8.dp))
             when (settings.allowMode) {
-                ALLOW_NONE -> RuleRow(Icons.Rounded.PhoneDisabled, "Ninguna llamada entra")
-                ALLOW_LIST -> RuleRow(Icons.Rounded.Contacts, "Tus contactos NO entran si no están en la lista")
-                else -> RuleRow(Icons.Rounded.Contacts, "Tus contactos siempre entran")
+                ALLOW_NONE -> RuleRow(Icons.Rounded.PhoneDisabled, stringResource(R.string.rule_none))
+                ALLOW_LIST -> RuleRow(Icons.Rounded.Contacts, stringResource(R.string.rule_list))
+                else -> RuleRow(Icons.Rounded.Contacts, stringResource(R.string.rule_contacts))
             }
             if (settings.allowMode != ALLOW_NONE) {
-                RuleRow(Icons.Rounded.GppGood, "${allowed.size} número(s) en tu lista de permitidos")
-                RuleRow(Icons.Rounded.VisibilityOff, "Números ocultos o privados: bloqueados")
-                if (settings.allowRepeated) RuleRow(Icons.Rounded.Replay, "Llamadas insistentes: la segunda entra")
+                RuleRow(Icons.Rounded.GppGood, pluralStringResource(R.plurals.rule_allowed_count, allowed.size, allowed.size))
+                RuleRow(Icons.Rounded.VisibilityOff, stringResource(R.string.rule_hidden))
+                if (settings.allowRepeated) RuleRow(Icons.Rounded.Replay, stringResource(R.string.rule_repeat))
             }
-            RuleRow(Icons.Rounded.Shield, "${log.size} llamada(s) bloqueada(s) en el historial")
+            RuleRow(Icons.Rounded.Shield, pluralStringResource(R.plurals.rule_blocked_count, log.size, log.size))
         }
 
         SectionCard {
-            Text("Apariencia", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold)
+            Text(stringResource(R.string.appearance_title), style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold)
             Spacer(Modifier.height(12.dp))
             SingleChoiceSegmentedButtonRow(Modifier.fillMaxWidth()) {
-                listOf(THEME_SYSTEM to "Sistema", THEME_LIGHT to "Claro", THEME_DARK to "Oscuro").forEachIndexed { i, (mode, label) ->
+                listOf(
+                    THEME_SYSTEM to R.string.theme_system,
+                    THEME_LIGHT to R.string.theme_light,
+                    THEME_DARK to R.string.theme_dark,
+                ).forEachIndexed { i, (mode, label) ->
                     SegmentedButton(
                         selected = settings.theme == mode,
                         onClick = { store.setTheme(mode) },
                         shape = SegmentedButtonDefaults.itemShape(i, 3),
-                    ) { Text(label) }
+                    ) { Text(stringResource(label)) }
                 }
             }
         }
@@ -258,7 +265,7 @@ fun HomeScreen(store: Store, setup: Setup, onSetupChanged: () -> Unit, modifier:
     editing?.let { isStart ->
         TimeDialog(
             initialMinute = if (isStart) settings.startMinute else settings.endMinute,
-            title = if (isStart) "Bloquear desde" else "Bloquear hasta",
+            title = stringResource(if (isStart) R.string.dialog_block_from else R.string.dialog_block_until),
             onDismiss = { editing = null },
             onConfirm = { minute ->
                 if (isStart) store.setStart(minute) else store.setEnd(minute)
@@ -297,13 +304,17 @@ private fun StatusCard(
         label = "fg",
     )
     val (title, subtitle) = when {
-        !enabled -> "Protección desactivada" to "Todas las llamadas entran normalmente"
-        broken -> "Protección detenida" to problem.orEmpty()
-        active && allowMode == ALLOW_NONE -> "Protección activa" to "No entra ninguna llamada"
-        active && allowMode == ALLOW_LIST -> "Protección activa" to "Solo entran los números de tu lista"
-        active -> "Protección activa" to "Solo entran tus contactos y permitidos"
-        scheduled -> "En espera" to "Se activará en el horario configurado"
-        else -> "Falta configurar" to "Concede los permisos para empezar"
+        !enabled -> stringResource(R.string.status_off_title) to stringResource(R.string.status_off_body)
+        broken -> stringResource(R.string.status_broken_title) to problem.orEmpty()
+        active -> stringResource(R.string.status_active_title) to stringResource(
+            when (allowMode) {
+                ALLOW_NONE -> R.string.status_active_none
+                ALLOW_LIST -> R.string.status_active_list
+                else -> R.string.status_active_contacts
+            },
+        )
+        scheduled -> stringResource(R.string.status_waiting_title) to stringResource(R.string.status_waiting_body)
+        else -> stringResource(R.string.status_setup_title) to stringResource(R.string.status_setup_body)
     }
 
     Card(
@@ -355,13 +366,13 @@ private fun SetupCard(setup: Setup, onClick: () -> Unit) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(Icons.Rounded.WarningAmber, contentDescription = null)
                 Spacer(Modifier.size(8.dp))
-                Text("Permisos necesarios", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold)
+                Text(stringResource(R.string.setup_title), style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold)
             }
             Spacer(Modifier.height(8.dp))
-            if (!setup.hasRole) Text("• Elegir BlockCall como app de filtro de llamadas")
-            if (!setup.hasContacts) Text("• Acceso a contactos (para dejarlos pasar)")
+            if (!setup.hasRole) Text(stringResource(R.string.setup_role))
+            if (!setup.hasContacts) Text(stringResource(R.string.setup_contacts))
             Spacer(Modifier.height(12.dp))
-            Button(onClick = onClick) { Text("Conceder") }
+            Button(onClick = onClick) { Text(stringResource(R.string.action_grant)) }
         }
     }
 }
@@ -436,8 +447,8 @@ private fun TimeDialog(initialMinute: Int, title: String, onDismiss: () -> Unit,
         onDismissRequest = onDismiss,
         title = { Text(title) },
         text = { TimePicker(state = state) },
-        confirmButton = { TextButton(onClick = { onConfirm(state.hour * 60 + state.minute) }) { Text("Aceptar") } },
-        dismissButton = { TextButton(onClick = onDismiss) { Text("Cancelar") } },
+        confirmButton = { TextButton(onClick = { onConfirm(state.hour * 60 + state.minute) }) { Text(stringResource(R.string.action_ok)) } },
+        dismissButton = { TextButton(onClick = onDismiss) { Text(stringResource(R.string.action_cancel)) } },
     )
 }
 

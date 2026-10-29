@@ -1,0 +1,36 @@
+BlockCall rechaza en silencio las llamadas entrantes de números que no conoces: no suenan, no vibran y no te interrumpen. Tus contactos siempre pueden llamarte.
+
+<b>¿Quién puede llamarte?</b>
+<ul>
+<li><b>Contactos</b>: entran tus contactos y los números de tu lista de Permitidos.</li>
+<li><b>Mi lista</b>: solo entran los números que tú elijas.</li>
+<li><b>Nadie</b>: no entra ninguna llamada.</li>
+</ul>
+
+<b>Funciones</b>
+<ul>
+<li>Activa siempre o por horario (por ejemplo, de 20:00 a 06:00, también cruzando la medianoche).</li>
+<li>Números ocultos o privados: bloqueados.</li>
+<li>Permitir si insiste: si el mismo número llama 2 veces en menos de 3 minutos, la segunda entra (útil en emergencias).</li>
+<li>Historial de llamadas bloqueadas con un botón para permitir el número.</li>
+<li>Un único aviso silencioso con las llamadas bloqueadas.</li>
+<li>Asistente que explica cada permiso de Android paso a paso.</li>
+<li>Material You, modo claro y oscuro.</li>
+</ul>
+
+<b>Ligera y privada</b>
+<ul>
+<li>Usa la API oficial de Android para filtrar llamadas (CallScreeningService): el sistema la activa solo cuando entra una llamada. No hay nada corriendo en segundo plano, así que no gasta batería y ningún limpiador de tareas la detiene.</li>
+<li>No pide permiso de internet: tus contactos y tu historial nunca salen del teléfono.</li>
+<li>Sin anuncios ni rastreadores. Pesa unos 2 MB.</li>
+<li>Si algo falla, deja pasar la llamada: nunca pierdes la llamada de un contacto.</li>
+</ul>
+
+<b>Permisos</b>
+<ul>
+<li><b>App de identificación de llamadas y spam</b>: necesaria para rechazar llamadas. No reemplaza tu app de Teléfono. Solo una app puede tener este permiso a la vez.</li>
+<li><b>Contactos</b>: para saber si quien llama es un contacto.</li>
+<li><b>Notificaciones</b> (opcional): para el aviso silencioso.</li>
+</ul>
+
+BlockCall solo filtra llamadas telefónicas normales. No bloquea SMS ni llamadas de WhatsApp u otras apps. Requiere Android 10 o superior. Disponible en español e inglés.

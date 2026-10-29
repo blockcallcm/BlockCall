@@ -51,11 +51,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.blockcall.R
 import com.blockcall.Store
 
 @Composable
@@ -74,9 +76,9 @@ fun AllowedScreen(store: Store, modifier: Modifier = Modifier) {
 
     Box(modifier.fillMaxSize()) {
         Column(Modifier.fillMaxSize()) {
-            Header("Permitidos", "Números que siempre pueden llamarte")
+            Header(stringResource(R.string.tab_allowed), stringResource(R.string.allowed_subtitle))
             if (allowed.isEmpty()) {
-                EmptyState(Icons.Rounded.GppGood, "Tu lista está vacía", "Agrega números de confianza a mano\no elígelos desde tus contactos.")
+                EmptyState(Icons.Rounded.GppGood, stringResource(R.string.allowed_empty_title), stringResource(R.string.allowed_empty_body))
             } else {
                 LazyColumn(
                     contentPadding = PaddingValues(start = 20.dp, end = 20.dp, bottom = 168.dp),
@@ -92,7 +94,7 @@ fun AllowedScreen(store: Store, modifier: Modifier = Modifier) {
                                 }
                             }
                             IconButton(onClick = { store.removeAllowed(item.number) }) {
-                                Icon(Icons.Rounded.DeleteOutline, contentDescription = "Quitar")
+                                Icon(Icons.Rounded.DeleteOutline, contentDescription = stringResource(R.string.action_remove))
                             }
                         }
                     }
@@ -107,13 +109,13 @@ fun AllowedScreen(store: Store, modifier: Modifier = Modifier) {
             ExtendedFloatingActionButton(
                 onClick = { pickContact.launch(Intent(Intent.ACTION_PICK, Phone.CONTENT_URI)) },
                 icon = { Icon(Icons.Rounded.Contacts, contentDescription = null) },
-                text = { Text("Desde contactos") },
+                text = { Text(stringResource(R.string.action_from_contacts)) },
                 containerColor = MaterialTheme.colorScheme.secondaryContainer,
             )
             ExtendedFloatingActionButton(
                 onClick = { adding = true },
                 icon = { Icon(Icons.Rounded.Add, contentDescription = null) },
-                text = { Text("Agregar número") },
+                text = { Text(stringResource(R.string.action_add_number)) },
             )
         }
     }
@@ -136,15 +138,15 @@ fun BlockedScreen(store: Store, modifier: Modifier = Modifier) {
     val allowed by store.allowed.collectAsStateWithLifecycle()
 
     Column(modifier.fillMaxSize()) {
-        Header("Bloqueadas", "Llamadas que BlockCall rechazó por ti") {
+        Header(stringResource(R.string.tab_blocked), stringResource(R.string.blocked_subtitle)) {
             if (log.isNotEmpty()) {
                 IconButton(onClick = store::clearLog) {
-                    Icon(Icons.Rounded.DeleteSweep, contentDescription = "Borrar historial")
+                    Icon(Icons.Rounded.DeleteSweep, contentDescription = stringResource(R.string.action_clear_history))
                 }
             }
         }
         if (log.isEmpty()) {
-            EmptyState(Icons.Rounded.PhoneDisabled, "Sin llamadas bloqueadas", "Aquí verás los números que fueron rechazados.")
+            EmptyState(Icons.Rounded.PhoneDisabled, stringResource(R.string.blocked_empty_title), stringResource(R.string.blocked_empty_body))
         } else {
             LazyColumn(
                 contentPadding = PaddingValues(start = 20.dp, end = 20.dp, bottom = 20.dp),
@@ -156,7 +158,7 @@ fun BlockedScreen(store: Store, modifier: Modifier = Modifier) {
                     Row(itemModifier(), verticalAlignment = Alignment.CenterVertically) {
                         IconBadge(if (hidden) Icons.Rounded.VisibilityOff else Icons.Rounded.PhoneDisabled)
                         Column(Modifier.weight(1f).padding(horizontal = 14.dp)) {
-                            Text(if (hidden) "Número oculto" else call.number, fontWeight = FontWeight.SemiBold)
+                            Text(if (hidden) stringResource(R.string.hidden_number) else call.number, fontWeight = FontWeight.SemiBold)
                             Text(
                                 DateUtils.getRelativeDateTimeString(context, call.time, DateUtils.MINUTE_IN_MILLIS, DateUtils.WEEK_IN_MILLIS, 0).toString(),
                                 style = MaterialTheme.typography.bodySmall,
@@ -167,7 +169,7 @@ fun BlockedScreen(store: Store, modifier: Modifier = Modifier) {
                             TextButton(onClick = { store.addAllowed(call.number, "") }) {
                                 Icon(Icons.Rounded.PersonAddAlt, contentDescription = null, modifier = Modifier.size(18.dp))
                                 Spacer(Modifier.size(6.dp))
-                                Text("Permitir")
+                                Text(stringResource(R.string.action_allow))
                             }
                         }
                     }
@@ -244,25 +246,25 @@ private fun AddNumberDialog(onDismiss: () -> Unit, onConfirm: (String, String) -
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Agregar número") },
+        title = { Text(stringResource(R.string.action_add_number)) },
         text = {
             Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 OutlinedTextField(
                     value = number,
                     onValueChange = { v -> number = v.filter { it.isDigit() || it in "+ -()" } },
-                    label = { Text("Número") },
+                    label = { Text(stringResource(R.string.field_number)) },
                     singleLine = true,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
                 )
                 OutlinedTextField(
                     value = name,
                     onValueChange = { name = it },
-                    label = { Text("Nombre (opcional)") },
+                    label = { Text(stringResource(R.string.field_name)) },
                     singleLine = true,
                 )
             }
         },
-        confirmButton = { TextButton(onClick = { onConfirm(number, name) }, enabled = valid) { Text("Guardar") } },
-        dismissButton = { TextButton(onClick = onDismiss) { Text("Cancelar") } },
+        confirmButton = { TextButton(onClick = { onConfirm(number, name) }, enabled = valid) { Text(stringResource(R.string.action_save)) } },
+        dismissButton = { TextButton(onClick = onDismiss) { Text(stringResource(R.string.action_cancel)) } },
     )
 }
