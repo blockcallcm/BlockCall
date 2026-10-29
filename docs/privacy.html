@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="es" data-lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BlockCall — Privacidad</title>
+  <meta name="theme-color" content="#07070b">
+  <link rel="icon" href="img/icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root { --bg: #07070b; --ink: #f4f2ee; --muted: #a3a1ad; --faint: #6c6a77; --line: rgba(255, 255, 255, .09); --sky: #32ade6;
+      --spectrum: linear-gradient(100deg, #ff9500, #ff2d55 34%, #af52de 66%, #007aff); color-scheme: dark; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.7 "Inter", "Segoe UI", system-ui, sans-serif; }
+    [data-lang="es"] [lang="en"], [data-lang="en"] [lang="es"] { display: none !important; }
+    main { max-width: 760px; margin: 0 auto; padding: 72px clamp(16px, 4vw, 40px) 60px; }
+    .top { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 48px; }
+    .top a { display: flex; align-items: center; gap: 9px; color: var(--ink); text-decoration: none; font-weight: 600; }
+    .top img { width: 22px; height: 22px; border-radius: 6px; }
+    .lang { display: flex; padding: 3px; border-radius: 999px; background: rgba(255, 255, 255, .05); }
+    .lang button { font: 600 12px "Inter", sans-serif; color: var(--faint); background: none; border: 0; padding: 6px 9px; border-radius: 999px; cursor: pointer; }
+    .lang button[aria-pressed="true"] { color: var(--ink); background: rgba(255, 255, 255, .12); }
+    .eyebrow { font-size: 12px; letter-spacing: .18em; text-transform: uppercase; color: var(--sky); margin: 0 0 18px; }
+    h1 { font-family: "Instrument Serif", Georgia, serif; font-weight: 400; font-size: clamp(44px, 7vw, 76px); line-height: 1; letter-spacing: -.02em; margin: 0 0 28px; }
+    h1 em { background: var(--spectrum); -webkit-background-clip: text; background-clip: text; color: transparent; padding-right: .08em; }
+    h2 { font-size: 18px; margin: 36px 0 8px; }
+    p, li { color: #c9c7d2; }
+    a { color: var(--sky); }
+    .updated { color: var(--faint); font-size: 14px; border-top: 1px solid var(--line); padding-top: 18px; margin-top: 44px; }
+  </style>
+</head>
+<body>
+<main>
+  <div class="top">
+    <a href="./"><img src="img/icon.png" alt="">BlockCall</a>
+    <div class="lang" role="group" aria-label="Idioma / Language">
+      <button type="button" data-set-lang="es" aria-pressed="true">ES</button>
+      <button type="button" data-set-lang="en" aria-pressed="false">EN</button>
+    </div>
+  </div>
+
+  <p class="eyebrow"><span lang="es">Política de privacidad</span><span lang="en">Privacy policy</span></p>
+  <h1><span lang="es">Tus datos se quedan<br><em>en tu teléfono</em>.</span><span lang="en">Your data stays<br><em>on your phone</em>.</span></h1>
+
+  <div lang="es">
+    <p>BlockCall no recoge, no envía y no vende ningún dato. La app <b>no tiene permiso de internet</b>, así que técnicamente no puede comunicarse con ningún servidor.</p>
+    <h2>Qué usa la app y para qué</h2>
+    <ul>
+      <li><b>Filtro de llamadas</b> (app de identificación de llamadas y spam): Android le muestra a BlockCall el número que llama para que decida si la llamada entra o se rechaza.</li>
+      <li><b>Contactos</b>: solo para comprobar si quien llama está en tu agenda. La agenda no se copia ni se guarda.</li>
+      <li><b>Notificaciones</b> (opcional): para el aviso silencioso de llamadas bloqueadas.</li>
+    </ul>
+    <h2>Qué se guarda</h2>
+    <p>Tu configuración, tu lista de números permitidos y el historial de las últimas 100 llamadas bloqueadas, todo dentro del almacenamiento privado de la app en tu teléfono. Puedes borrar el historial desde la app, y todo se elimina al desinstalarla. Si tienes activada la copia de seguridad de Android, el sistema puede incluir estos datos en tu copia personal.</p>
+    <h2>Terceros</h2>
+    <p>Sin anuncios, sin analítica, sin rastreadores y sin librerías de terceros que envíen datos.</p>
+    <h2>Contacto</h2>
+    <p>Dudas o problemas: <a href="https://github.com/cmonroyp/BlockCall/issues">github.com/cmonroyp/BlockCall/issues</a>.</p>
+    <p class="updated">Última actualización: 28 de octubre de 2026.</p>
+  </div>
+
+  <div lang="en">
+    <p>BlockCall doesn't collect, send or sell any data. The app <b>has no internet permission</b>, so it technically cannot talk to any server.</p>
+    <h2>What the app uses, and why</h2>
+    <ul>
+      <li><b>Call screening</b> (caller ID &amp; spam app): Android shows BlockCall the calling number so it can decide whether the call rings or is rejected.</li>
+      <li><b>Contacts</b>: only to check whether the caller is in your address book. Your contacts are never copied or stored.</li>
+      <li><b>Notifications</b> (optional): for the silent blocked-calls summary.</li>
+    </ul>
+    <h2>What is stored</h2>
+    <p>Your settings, your allowed numbers and the history of the last 100 blocked calls, all in the app's private storage on your phone. You can clear the history in the app, and everything is removed when you uninstall it. If Android backup is enabled, the system may include this data in your personal backup.</p>
+    <h2>Third parties</h2>
+    <p>No ads, no analytics, no trackers, and no third-party libraries that send data.</p>
+    <h2>Contact</h2>
+    <p>Questions or issues: <a href="https://github.com/cmonroyp/BlockCall/issues">github.com/cmonroyp/BlockCall/issues</a>.</p>
+    <p class="updated">Last updated: October 28, 2026.</p>
+  </div>
+</main>
+<script>
+  (function () {
+    var root = document.documentElement, saved = null;
+    try { saved = localStorage.getItem('lang'); } catch (e) {}
+    var lang = saved || ((navigator.language || 'es').toLowerCase().indexOf('es') === 0 ? 'es' : 'en');
+    function apply(l) {
+      lang = l; root.setAttribute('data-lang', l); root.setAttribute('lang', l);
+      document.title = l === 'es' ? 'BlockCall — Privacidad' : 'BlockCall — Privacy';
+      document.querySelectorAll('[data-set-lang]').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.setLang === l)); });
+    }
+    apply(lang);
+    document.querySelectorAll('[data-set-lang]').forEach(function (b) {
+      b.addEventListener('click', function () { apply(b.dataset.setLang); try { localStorage.setItem('lang', lang); } catch (e) {} });
+    });
+  })();
+</script>
+</body>
+</html>
