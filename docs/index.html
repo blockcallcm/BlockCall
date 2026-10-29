@@ -86,7 +86,8 @@
     /* Marco de teléfono */
     .phone { width: min(320px, 74vw); padding: 10px; border-radius: 44px; background: linear-gradient(160deg, #23232e, #0f0f16);
       border: 1px solid rgba(255, 255, 255, .12); box-shadow: 0 40px 90px rgba(0, 0, 0, .55), inset 0 0 0 1px rgba(255, 255, 255, .04); }
-    .phone img { display: block; width: 100%; border-radius: 34px; }
+    /* height:auto: sin esto el alto fijo del atributo estira la imagen al encogerse el ancho. */
+    .phone img { display: block; width: 100%; height: auto; border-radius: 34px; }
 
     /* Capítulos */
     .chapter { position: relative; display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); gap: clamp(32px, 5vw, 88px); align-items: center;
@@ -206,8 +207,8 @@
     </div>
     <div class="hero-shot">
       <div class="phone">
-        <img lang="es" src="img/es-3.png" alt="Pantalla de inicio de BlockCall con la protección activa" width="540" height="1128">
-        <img lang="en" src="img/en-3.png" alt="BlockCall home screen with protection on" width="540" height="1128">
+        <img lang="es" src="img/es-3.png" alt="Pantalla de inicio de BlockCall con la protección activa" width="1080" height="2256">
+        <img lang="en" src="img/en-3.png" alt="BlockCall home screen with protection on" width="1080" height="2256">
       </div>
     </div>
     <dl class="stats">
@@ -231,8 +232,8 @@
     </div>
     <div class="art reveal">
       <div class="phone">
-        <img lang="es" src="img/es-4.png" alt="Selector de quién puede llamar y reglas" loading="lazy" width="540" height="1128">
-        <img lang="en" src="img/en-4.png" alt="Who can call you selector and rules" loading="lazy" width="540" height="1128">
+        <img lang="es" src="img/es-4.png" alt="Selector de quién puede llamar y reglas" loading="lazy" width="1080" height="2256">
+        <img lang="en" src="img/en-4.png" alt="Who can call you selector and rules" loading="lazy" width="1080" height="2256">
       </div>
     </div>
   </section>
@@ -251,8 +252,8 @@
     </div>
     <div class="art reveal">
       <div class="phone">
-        <img lang="es" src="img/es-2.png" alt="Asistente de permisos" loading="lazy" width="540" height="1128">
-        <img lang="en" src="img/en-2.png" alt="Permission assistant" loading="lazy" width="540" height="1128">
+        <img lang="es" src="img/es-2.png" alt="Asistente de permisos" loading="lazy" width="1080" height="2256">
+        <img lang="en" src="img/en-2.png" alt="Permission assistant" loading="lazy" width="1080" height="2256">
       </div>
     </div>
   </section>
@@ -278,7 +279,7 @@
         </div>
       </div>
       <div class="phone">
-        <img src="img/es-5.png" alt="Lista de llamadas bloqueadas / Blocked calls list" loading="lazy" width="540" height="1128">
+        <img src="img/es-5.png" alt="Lista de llamadas bloqueadas / Blocked calls list" loading="lazy" width="1080" height="2256">
       </div>
     </div>
   </section>
