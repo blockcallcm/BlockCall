@@ -367,13 +367,18 @@
 
     // Aparición al desplazarse.
     var items = document.querySelectorAll('.reveal');
+    function showAll() { items.forEach(function (el) { el.classList.add('in'); }); }
     if ('IntersectionObserver' in window) {
+      var fired = false;
       var io = new IntersectionObserver(function (es) {
+        fired = true;
         es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
       }, { threshold: 0.12 });
       items.forEach(function (el) { io.observe(el); });
+      // Si el navegador no llega a avisar (pestaña sin dibujar, lectores), el contenido se muestra igual.
+      setTimeout(function () { if (!fired) showAll(); }, 3000);
     } else {
-      items.forEach(function (el) { el.classList.add('in'); });
+      showAll();
     }
 
     // El teléfono de la portada se endereza al bajar.
