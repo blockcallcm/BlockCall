@@ -4,7 +4,7 @@
 
 App Android (10+) que rechaza en silencio las llamadas entrantes de números que no están en tus contactos ni en tu lista de permitidos. Disponible en español e inglés.
 
-[**⬇ Descargar el último APK**](https://github.com/cmonroyp/BlockCall/releases/latest) · Licencia: [GPL-3.0](LICENSE)
+[**⬇ Descargar el último APK**](https://github.com/blockcallcm/BlockCall/releases/latest) · Licencia: [GPL-3.0](LICENSE)
 
 <p>
   <img src="fastlane/metadata/android/es-ES/images/phoneScreenshots/1.png" width="200" alt="Bienvenida">
@@ -28,8 +28,8 @@ App Android (10+) que rechaza en silencio las llamadas entrantes de números que
 - Android siempre deja las llamadas filtradas en el historial del teléfono como "bloqueadas".
 
 ## Instalación
-1. Descarga el APK de [Releases](https://github.com/cmonroyp/BlockCall/releases) y ábrelo en el celular (permite "instalar apps de origen desconocido" si te lo pide).
-   Con [Obtainium](https://github.com/ImranR98/Obtainium) recibes las actualizaciones automáticamente: *Agregar app* → `https://github.com/cmonroyp/BlockCall`.
+1. Descarga el APK de [Releases](https://github.com/blockcallcm/BlockCall/releases) y ábrelo en el celular (permite "instalar apps de origen desconocido" si te lo pide).
+   Con [Obtainium](https://github.com/ImranR98/Obtainium) recibes las actualizaciones automáticamente: *Agregar app* → `https://github.com/blockcallcm/BlockCall`.
 2. Abre BlockCall y sigue el asistente:
    - **Filtro de llamadas**: en la lista marca **BlockCall** (no "Ninguna") y toca **Hacer predeterminada**. No reemplaza tu app de Teléfono. Solo una app puede tener este permiso (Truecaller, por ejemplo, dejará de filtrar).
    - **Contactos** y **notificaciones**: toca **Permitir**.

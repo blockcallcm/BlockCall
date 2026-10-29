@@ -1,0 +1,5 @@
+• First public release, in English and Spanish.
+• Setup assistant on first launch.
+• Who can call you?: Contacts / My list / Nobody.
+• Silent notification for blocked calls.
+• Red warning if another app takes over call screening.

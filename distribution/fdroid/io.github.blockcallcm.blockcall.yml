@@ -1,0 +1,26 @@
+Categories:
+  - Phone & SMS
+License: GPL-3.0-only
+AuthorName: BlockCall
+WebSite: https://blockcallcm.github.io/
+SourceCode: https://github.com/blockcallcm/BlockCall
+IssueTracker: https://github.com/blockcallcm/BlockCall/issues
+Changelog: https://github.com/blockcallcm/BlockCall/releases
+
+AutoName: BlockCall
+
+RepoType: git
+Repo: https://github.com/blockcallcm/BlockCall.git
+
+Builds:
+  - versionName: '1.3'
+    versionCode: 4
+    commit: v1.3
+    subdir: app
+    gradle:
+      - yes
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: '1.3'
+CurrentVersionCode: 4

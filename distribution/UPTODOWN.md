@@ -3,15 +3,15 @@
 | Campo | Valor |
 |---|---|
 | Nombre | BlockCall |
-| Paquete | `io.github.cmonroyp.blockcall` |
-| Versión | 1.2 (versionCode 3) |
+| Paquete | `io.github.blockcallcm.blockcall` |
+| Versión | 1.3 (versionCode 4) |
 | Categoría | Comunicación / Communication (o Herramientas / Tools) |
 | Precio | Gratis |
 | Licencia | GPL-3.0 (código abierto) |
-| Sitio web | https://cmonroyp.github.io/BlockCall/ |
-| Política de privacidad | https://cmonroyp.github.io/BlockCall/privacy.html |
-| Código fuente | https://github.com/cmonroyp/BlockCall |
-| APK | `BlockCall.apk` de https://github.com/cmonroyp/BlockCall/releases/latest |
+| Sitio web | https://blockcallcm.github.io/ |
+| Política de privacidad | https://blockcallcm.github.io/privacy.html |
+| Código fuente | https://github.com/blockcallcm/BlockCall |
+| APK | `BlockCall.apk` de https://github.com/blockcallcm/BlockCall/releases/latest |
 | Ícono 512×512 | `fastlane/metadata/android/es-ES/images/icon.png` |
 | Capturas (es) | `fastlane/metadata/android/es-ES/images/phoneScreenshots/1.png` … `5.png` |
 | Capturas (en) | `fastlane/metadata/android/en-US/images/phoneScreenshots/1.png` … `4.png` |

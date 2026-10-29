@@ -4,7 +4,7 @@
 
 Android app (10+) that silently rejects incoming calls from numbers that aren't in your contacts or on your allowed list. Available in English and Spanish.
 
-[**⬇ Download the latest APK**](https://github.com/cmonroyp/BlockCall/releases/latest) · License: [GPL-3.0](LICENSE)
+[**⬇ Download the latest APK**](https://github.com/blockcallcm/BlockCall/releases/latest) · License: [GPL-3.0](LICENSE)
 
 <p>
   <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/1.png" width="200" alt="Welcome">
@@ -28,8 +28,8 @@ Android app (10+) that silently rejects incoming calls from numbers that aren't 
 - Android always records screened calls in the phone's call log as "blocked".
 
 ## Install
-1. Download the APK from [Releases](https://github.com/cmonroyp/BlockCall/releases) and open it on your phone (allow "install unknown apps" if asked).
-   With [Obtainium](https://github.com/ImranR98/Obtainium) you get updates automatically: *Add app* → `https://github.com/cmonroyp/BlockCall`.
+1. Download the APK from [Releases](https://github.com/blockcallcm/BlockCall/releases) and open it on your phone (allow "install unknown apps" if asked).
+   With [Obtainium](https://github.com/ImranR98/Obtainium) you get updates automatically: *Add app* → `https://github.com/blockcallcm/BlockCall`.
 2. Open BlockCall and follow the assistant:
    - **Call screening**: select **BlockCall** in the list (not "None") and tap **Set as default**. It doesn't replace your Phone app. Only one app can hold this role (e.g. Truecaller will stop screening).
    - **Contacts** and **notifications**: tap **Allow**.

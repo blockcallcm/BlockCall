@@ -1,25 +1,29 @@
 # Publicar BlockCall en tiendas comunitarias
 
-Todo es gratis. Las solicitudes a IzzyOnDroid y F-Droid se hacen desde **GitLab** con una cuenta propia (gratuita).
+Todo es gratis. F-Droid recibe solicitudes en **GitLab** e IzzyOnDroid en **Codeberg**, cada uno con una cuenta propia (gratuita).
+
+Estado: solicitud a F-Droid enviada → <https://gitlab.com/fdroid/rfp/-/issues/4699>
 
 ## 1. GitHub Releases + Obtainium (ya disponible)
-Cada versión publica su APK en <https://github.com/cmonroyp/BlockCall/releases>.
+Cada versión publica su APK en <https://github.com/blockcallcm/BlockCall/releases>.
 Con [Obtainium](https://github.com/ImranR98/Obtainium) cualquiera recibe las actualizaciones automáticamente:
-*Agregar app* → pegar `https://github.com/cmonroyp/BlockCall`.
+*Agregar app* → pegar `https://github.com/blockcallcm/BlockCall`.
 
 ## 2. IzzyOnDroid (días)
 Usa el mismo APK y la misma firma que GitHub, así que es compatible con las descargas de Releases.
 
-1. Crea una cuenta en <https://gitlab.com>.
-2. Abre una solicitud en <https://gitlab.com/IzzyOnDroid/repo/-/issues/new> y pega:
+Su antiguo repositorio de GitLab está archivado: ahora las solicitudes van a Codeberg.
+
+1. Crea una cuenta en <https://codeberg.org>.
+2. Revisa la política de inclusión (<https://izzyondroid.org/docs/general/AppInclusionPolicy/>) y abre la solicitud en el repositorio de mantenimiento de IzzyOnDroid en Codeberg, pegando:
 
 ```
-Title: Inclusion request: BlockCall (io.github.cmonroyp.blockcall)
+Title: Inclusion request: BlockCall (io.github.blockcallcm.blockcall)
 
-- Source code: https://github.com/cmonroyp/BlockCall
+- Source code: https://github.com/blockcallcm/BlockCall
 - License: GPL-3.0-only
-- APK: attached to each GitHub release (https://github.com/cmonroyp/BlockCall/releases)
-- Package name: io.github.cmonroyp.blockcall
+- APK: attached to each GitHub release (https://github.com/blockcallcm/BlockCall/releases)
+- Package name: io.github.blockcallcm.blockcall
 - Description: Silently rejects incoming calls from numbers that aren't in your contacts
   (or only allows a custom list / nobody), with schedule, "allow if they insist",
   hidden-number blocking and a silent summary notification. Uses CallScreeningService,
@@ -32,7 +36,7 @@ Title: Inclusion request: BlockCall (io.github.cmonroyp.blockcall)
 F-Droid compila la app desde el código y la firma con **su propia clave**: quien la instale desde F-Droid no puede actualizar con el APK de GitHub (ni al revés) sin desinstalar.
 
 1. Con tu cuenta de GitLab, haz *fork* de <https://gitlab.com/fdroid/fdroiddata>.
-2. Copia [`fdroid/io.github.cmonroyp.blockcall.yml`](fdroid/io.github.cmonroyp.blockcall.yml) a `metadata/` en tu fork.
+2. Copia [`fdroid/io.github.blockcallcm.blockcall.yml`](fdroid/io.github.blockcallcm.blockcall.yml) a `metadata/` en tu fork.
 3. Abre un *merge request* titulado `New app: BlockCall`. Los revisores de F-Droid pueden pedir ajustes.
 
 ## 4. Otras tiendas gratuitas (no exigen código abierto)

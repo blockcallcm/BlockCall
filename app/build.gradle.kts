@@ -18,11 +18,11 @@ android {
 
     defaultConfig {
         // Identificador público único (formato habitual en F-Droid/IzzyOnDroid); el código sigue en com.blockcall.
-        applicationId = "io.github.cmonroyp.blockcall"
+        applicationId = "io.github.blockcallcm.blockcall"
         minSdk = 29
         targetSdk = 35
-        versionCode = 3
-        versionName = "1.2"
+        versionCode = 4
+        versionName = "1.3"
         manifestPlaceholders["appLabel"] = "BlockCall"
         // Solo inglés (base) y español: descarta las traducciones de las librerías y aligera el APK.
         resourceConfigurations += listOf("en", "es")

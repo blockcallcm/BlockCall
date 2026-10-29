@@ -1,0 +1,5 @@
+• Primera versión pública, en español e inglés.
+• Asistente de permisos al primer inicio.
+• ¿Quién puede llamarte?: Contactos / Mi lista / Nadie.
+• Aviso silencioso de llamadas bloqueadas.
+• Aviso rojo si otra app toma el filtro de llamadas.
