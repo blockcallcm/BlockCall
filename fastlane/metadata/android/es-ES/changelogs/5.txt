@@ -1,0 +1,2 @@
+• Mantenimiento: la compilación ahora verifica la integridad de Gradle.
+• Sin cambios en el funcionamiento de la app.

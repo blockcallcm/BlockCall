@@ -1,0 +1,2 @@
+• Maintenance: the build now verifies Gradle's integrity.
+• No changes to how the app works.

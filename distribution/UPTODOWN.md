@@ -4,7 +4,7 @@
 |---|---|
 | Nombre | BlockCall |
 | Paquete | `io.github.blockcallcm.blockcall` |
-| Versión | 1.3 (versionCode 4) |
+| Versión | 1.3.1 (versionCode 5) |
 | Categoría | Comunicación / Communication (o Herramientas / Tools) |
 | Precio | Gratis |
 | Licencia | GPL-3.0 (código abierto) |
