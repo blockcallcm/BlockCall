@@ -7,10 +7,10 @@ App Android (10+) que rechaza en silencio las llamadas entrantes de números que
 [**⬇ Descargar el último APK**](https://github.com/blockcallcm/BlockCall/releases/latest) · Licencia: [GPL-3.0](LICENSE)
 
 <p>
-  <img src="fastlane/metadata/android/es-ES/images/phoneScreenshots/1.png" width="200" alt="Bienvenida">
-  <img src="fastlane/metadata/android/es-ES/images/phoneScreenshots/2.png" width="200" alt="Permiso de filtro">
   <img src="fastlane/metadata/android/es-ES/images/phoneScreenshots/3.png" width="200" alt="Inicio">
-  <img src="fastlane/metadata/android/es-ES/images/phoneScreenshots/5.png" width="200" alt="Bloqueadas">
+  <img src="fastlane/metadata/android/es-ES/images/phoneScreenshots/4.png" width="200" alt="Horario">
+  <img src="fastlane/metadata/android/es-ES/images/phoneScreenshots/6.png" width="200" alt="Permitidos">
+  <img src="fastlane/metadata/android/es-ES/images/phoneScreenshots/7.png" width="200" alt="Bloqueadas">
 </p>
 
 ## Funciones
