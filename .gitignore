@@ -1,0 +1,13 @@
+# Compilación y entorno local
+.gradle/
+build/
+local.properties
+*.iml
+.idea/
+
+# Firma de la app: NUNCA subir (sin esto no se pueden publicar actualizaciones)
+keystore/
+keystore.properties
+
+# APK generados (se publican como archivos de la versión, no en el código)
+*.apk

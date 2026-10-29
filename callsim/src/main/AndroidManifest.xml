@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <application android:label="CallSim">
+
+        <service
+            android:name=".SimConnectionService"
+            android:exported="true"
+            android:permission="android.permission.BIND_TELECOM_CONNECTION_SERVICE">
+            <intent-filter>
+                <action android:name="android.telecom.ConnectionService" />
+            </intent-filter>
+        </service>
+
+        <!-- Se dispara por adb:
+             am broadcast -n com.blockcall.callsim/.TriggerReceiver -a register
+             am broadcast -n com.blockcall.callsim/.TriggerReceiver -a call -\-es number +573001234567
+             am broadcast -n com.blockcall.callsim/.TriggerReceiver -a call -\-ez hidden true -->
+        <receiver
+            android:name=".TriggerReceiver"
+            android:exported="true" />
+    </application>
+</manifest>

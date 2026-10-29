@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Escudo con un teléfono tachado, centrado en la zona segura de 66dp del icono adaptativo. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <group android:translateX="30" android:translateY="28">
+        <path
+            android:fillColor="#FFFFFF"
+            android:pathData="M24,0 L46,8 L46,24 C46,38 37,48 24,52 C11,48 2,38 2,24 L2,8 Z" />
+        <path
+            android:fillColor="#4F46E5"
+            android:pathData="M17.5,16 C18.6,16 19.3,16.6 19.6,17.6 L20.6,21 C20.9,22 20.6,22.9 19.8,23.5 L18.4,24.6 C19.6,27.2 21.6,29.2 24.2,30.4 L25.3,29 C25.9,28.2 26.8,27.9 27.8,28.2 L31.2,29.2 C32.2,29.5 32.8,30.2 32.8,31.3 L32.8,34.3 C32.8,35.6 31.8,36.6 30.5,36.6 C21.8,36.2 14.6,29 14.2,20.3 C14.2,19 15.2,18 16.5,18 Z" />
+        <path
+            android:strokeColor="#4F46E5"
+            android:strokeWidth="3.2"
+            android:strokeLineCap="round"
+            android:pathData="M13,15 L35,37" />
+    </group>
+</vector>
