@@ -11,3 +11,6 @@ keystore.properties
 
 # APK generados (se publican como archivos de la versión, no en el código)
 *.apk
+
+# Scripts locales de pruebas y capturas (no se publican)
+.local-tools/
