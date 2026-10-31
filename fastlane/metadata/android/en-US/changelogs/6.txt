@@ -1,0 +1,5 @@
+• New: "Allow people you called". If you called a number in the last 7 days, their call back gets through.
+• New: "Block international calls". Rejects unknown callers from other countries (your country code is detected automatically), even outside the schedule and if they insist.
+• New: "Silence instead of reject". Blocked calls come in without ringing, and you can answer if you're looking at your phone.
+• Redesign: main card with stats, grouped settings and history by day.
+• New logo.

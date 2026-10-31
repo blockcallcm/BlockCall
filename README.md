@@ -8,9 +8,9 @@ Android app (10+) that silently rejects incoming calls from numbers that aren't 
 
 <p>
   <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/3.png" width="200" alt="Home">
-  <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/4.png" width="200" alt="Schedule">
-  <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/6.png" width="200" alt="Allowed list">
-  <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/7.png" width="200" alt="Blocked calls">
+  <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/4.png" width="200" alt="New rules">
+  <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/8.png" width="200" alt="Allowed list">
+  <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/9.png" width="200" alt="Blocked calls">
 </p>
 
 ## Features
@@ -18,6 +18,9 @@ Android app (10+) that silently rejects incoming calls from numbers that aren't 
 - Always on, or on a schedule (across midnight too, e.g. 20:00–06:00).
 - Hidden or private numbers are blocked.
 - **Allow if they insist**: if the same number calls twice within 3 minutes, the second call rings.
+- **Allow people you called**: if you called a number in the last 7 days, their call back gets through.
+- **Block international calls**: rejects unknown callers without your country code (detected from the SIM), even outside the schedule.
+- **Silence instead of reject**: blocked calls come in without ringing, so you can still answer.
 - History of blocked calls, a single silent notification, light/dark theme.
 - First-run assistant that explains each Android permission prompt.
 

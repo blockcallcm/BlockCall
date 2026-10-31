@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <!-- Solo para simular salientes por su propia cuenta (acción "dial"); nunca marca por la SIM. -->
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+
     <application android:label="CallSim">
 
         <service
@@ -15,7 +18,9 @@
         <!-- Se dispara por adb:
              am broadcast -n com.blockcall.callsim/.TriggerReceiver -a register
              am broadcast -n com.blockcall.callsim/.TriggerReceiver -a call -\-es number +573001234567
-             am broadcast -n com.blockcall.callsim/.TriggerReceiver -a call -\-ez hidden true -->
+             am broadcast -n com.blockcall.callsim/.TriggerReceiver -a call -\-ez hidden true
+             am broadcast -n com.blockcall.callsim/.TriggerReceiver -a dial -\-es number +573001234567 -->
+
         <receiver
             android:name=".TriggerReceiver"
             android:exported="true" />

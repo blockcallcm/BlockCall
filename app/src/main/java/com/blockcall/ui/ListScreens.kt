@@ -23,6 +23,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.rounded.VolumeOff
 import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.Contacts
 import androidx.compose.material.icons.rounded.DeleteOutline
@@ -57,8 +58,11 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.blockcall.AllowedNumber
+import com.blockcall.BlockedCall
 import com.blockcall.R
 import com.blockcall.Store
+import java.util.Calendar
 
 @Composable
 fun AllowedScreen(store: Store, modifier: Modifier = Modifier) {
@@ -86,7 +90,7 @@ fun AllowedScreen(store: Store, modifier: Modifier = Modifier) {
                 ) {
                     items(allowed, key = { it.number }) { item ->
                         Row(itemModifier(), verticalAlignment = Alignment.CenterVertically) {
-                            Avatar(item.name)
+                            Avatar(item.name, item.number)
                             Column(Modifier.weight(1f).padding(horizontal = 14.dp)) {
                                 Text(item.name.ifBlank { item.number }, fontWeight = FontWeight.SemiBold)
                                 if (item.name.isNotBlank()) {
@@ -133,7 +137,6 @@ fun AllowedScreen(store: Store, modifier: Modifier = Modifier) {
 
 @Composable
 fun BlockedScreen(store: Store, modifier: Modifier = Modifier) {
-    val context = LocalContext.current
     val log by store.log.collectAsStateWithLifecycle()
     val allowed by store.allowed.collectAsStateWithLifecycle()
 
@@ -148,32 +151,59 @@ fun BlockedScreen(store: Store, modifier: Modifier = Modifier) {
         if (log.isEmpty()) {
             EmptyState(Icons.Rounded.PhoneDisabled, stringResource(R.string.blocked_empty_title), stringResource(R.string.blocked_empty_body))
         } else {
+            // Agrupadas por día ("Hoy", "Ayer", fecha), conservando el orden del historial.
+            val days = remember(log) { log.groupBy { dayKey(it.time) } }
             LazyColumn(
                 contentPadding = PaddingValues(start = 20.dp, end = 20.dp, bottom = 20.dp),
                 verticalArrangement = Arrangement.spacedBy(10.dp),
             ) {
-                items(log) { call ->
-                    val hidden = call.number == Store.HIDDEN
-                    val isAllowed = !hidden && allowed.any { it.number == call.number }
-                    Row(itemModifier(), verticalAlignment = Alignment.CenterVertically) {
-                        IconBadge(if (hidden) Icons.Rounded.VisibilityOff else Icons.Rounded.PhoneDisabled)
-                        Column(Modifier.weight(1f).padding(horizontal = 14.dp)) {
-                            Text(if (hidden) stringResource(R.string.hidden_number) else call.number, fontWeight = FontWeight.SemiBold)
-                            Text(
-                                DateUtils.getRelativeDateTimeString(context, call.time, DateUtils.MINUTE_IN_MILLIS, DateUtils.WEEK_IN_MILLIS, 0).toString(),
-                                style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            )
-                        }
-                        if (!hidden && !isAllowed) {
-                            TextButton(onClick = { store.addAllowed(call.number, "") }) {
-                                Icon(Icons.Rounded.PersonAddAlt, contentDescription = null, modifier = Modifier.size(18.dp))
-                                Spacer(Modifier.size(6.dp))
-                                Text(stringResource(R.string.action_allow))
-                            }
-                        }
-                    }
+                days.forEach { (day, calls) ->
+                    item(key = "day$day") { DayHeader(dayLabel(calls.first().time)) }
+                    items(calls) { call -> BlockedRow(store, call, allowed) }
                 }
+            }
+        }
+    }
+}
+
+@Composable
+private fun BlockedRow(store: Store, call: BlockedCall, allowed: List<AllowedNumber>) {
+    val context = LocalContext.current
+    val hidden = call.number == Store.HIDDEN
+    val isAllowed = !hidden && allowed.any { it.number == call.number }
+    Row(itemModifier(), verticalAlignment = Alignment.CenterVertically) {
+        IconBadge(
+            when {
+                call.silenced -> Icons.AutoMirrored.Rounded.VolumeOff
+                hidden -> Icons.Rounded.VisibilityOff
+                else -> Icons.Rounded.PhoneDisabled
+            },
+            silenced = call.silenced,
+        )
+        Column(Modifier.weight(1f).padding(horizontal = 14.dp)) {
+            Text(if (hidden) stringResource(R.string.hidden_number) else call.number, fontWeight = FontWeight.SemiBold)
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(
+                    DateUtils.formatDateTime(context, call.time, DateUtils.FORMAT_SHOW_TIME),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+                if (call.silenced) {
+                    Text(
+                        " · " + stringResource(R.string.silenced_tag),
+                        style = MaterialTheme.typography.bodySmall,
+                        fontWeight = FontWeight.SemiBold,
+                        color = MaterialTheme.colorScheme.tertiary,
+                        maxLines = 1,
+                    )
+                }
+            }
+        }
+        if (!hidden && !isAllowed) {
+            TextButton(onClick = { store.addAllowed(call.number, "") }) {
+                Icon(Icons.Rounded.PersonAddAlt, contentDescription = null, modifier = Modifier.size(18.dp))
+                Spacer(Modifier.size(6.dp))
+                Text(stringResource(R.string.action_allow))
             }
         }
     }
@@ -197,28 +227,63 @@ private fun itemModifier() = Modifier
     .padding(horizontal = 14.dp, vertical = 12.dp)
 
 @Composable
-private fun Avatar(name: String) {
+private fun Avatar(name: String, seed: String) {
+    // Cada persona con un color estable del tema, para distinguirlas de un vistazo.
+    val colors = MaterialTheme.colorScheme
+    val (bg, fg) = listOf(
+        colors.primaryContainer to colors.onPrimaryContainer,
+        colors.secondaryContainer to colors.onSecondaryContainer,
+        colors.tertiaryContainer to colors.onTertiaryContainer,
+    )[Math.floorMod(seed.hashCode(), 3)]
     Box(
-        Modifier.size(42.dp).background(MaterialTheme.colorScheme.primaryContainer, CircleShape),
+        Modifier.size(42.dp).background(bg, CircleShape),
         contentAlignment = Alignment.Center,
     ) {
         val initial = name.firstOrNull { it.isLetter() }
         if (initial != null) {
-            Text(initial.uppercase(), color = MaterialTheme.colorScheme.onPrimaryContainer, fontWeight = FontWeight.Bold)
+            Text(initial.uppercase(), color = fg, fontWeight = FontWeight.Bold)
         } else {
-            Icon(Icons.Rounded.Person, contentDescription = null, tint = MaterialTheme.colorScheme.onPrimaryContainer)
+            Icon(Icons.Rounded.Person, contentDescription = null, tint = fg)
         }
     }
 }
 
 @Composable
-private fun IconBadge(icon: ImageVector) {
+private fun IconBadge(icon: ImageVector, silenced: Boolean) {
+    val colors = MaterialTheme.colorScheme
     Box(
-        Modifier.size(42.dp).background(MaterialTheme.colorScheme.errorContainer, CircleShape),
+        Modifier.size(42.dp).background(if (silenced) colors.tertiaryContainer else colors.errorContainer, CircleShape),
         contentAlignment = Alignment.Center,
     ) {
-        Icon(icon, contentDescription = null, tint = MaterialTheme.colorScheme.onErrorContainer, modifier = Modifier.size(20.dp))
+        Icon(icon, contentDescription = null, tint = if (silenced) colors.onTertiaryContainer else colors.onErrorContainer, modifier = Modifier.size(20.dp))
     }
+}
+
+@Composable
+private fun DayHeader(text: String) {
+    Text(
+        text,
+        style = MaterialTheme.typography.labelLarge,
+        fontWeight = FontWeight.SemiBold,
+        color = MaterialTheme.colorScheme.primary,
+        modifier = Modifier.padding(start = 6.dp, top = 8.dp),
+    )
+}
+
+private fun dayKey(time: Long): Int {
+    val c = Calendar.getInstance().apply { timeInMillis = time }
+    return c.get(Calendar.YEAR) * 1000 + c.get(Calendar.DAY_OF_YEAR)
+}
+
+@Composable
+private fun dayLabel(time: Long): String = when {
+    DateUtils.isToday(time) -> stringResource(R.string.day_today)
+    DateUtils.isToday(time + DateUtils.DAY_IN_MILLIS) -> stringResource(R.string.day_yesterday)
+    else -> DateUtils.formatDateTime(
+        LocalContext.current,
+        time,
+        DateUtils.FORMAT_SHOW_WEEKDAY or DateUtils.FORMAT_SHOW_DATE or DateUtils.FORMAT_ABBREV_MONTH,
+    )
 }
 
 @Composable

@@ -12,6 +12,9 @@ BlockCall rechaza en silencio las llamadas entrantes de números que no conoces:
 <li>Activa siempre o por horario (por ejemplo, de 20:00 a 06:00, también cruzando la medianoche).</li>
 <li>Números ocultos o privados: bloqueados.</li>
 <li>Permitir si insiste: si el mismo número llama 2 veces en menos de 3 minutos, la segunda entra (útil en emergencias).</li>
+<li>Permitir a quien llamaste: si tú llamaste a un número en los últimos 7 días, su llamada de vuelta entra.</li>
+<li>Bloquear internacionales: rechaza a los desconocidos que no empiecen por el indicativo de tu país (p. ej. +57), también fuera del horario. El indicativo se detecta solo.</li>
+<li>Silenciar en vez de rechazar: las llamadas bloqueadas entran sin sonar y puedes contestarlas si estás mirando el celular.</li>
 <li>Historial de llamadas bloqueadas con un botón para permitir el número.</li>
 <li>Un único aviso silencioso con las llamadas bloqueadas.</li>
 <li>Asistente que explica cada permiso de Android paso a paso.</li>

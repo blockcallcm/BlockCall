@@ -49,6 +49,19 @@
     <string name="repeat_disabled">No aplica con «Nadie»: todas las llamadas se rechazan</string>
     <string name="notify_title">Avisarme de bloqueos</string>
     <string name="notify_body">Notificación silenciosa con las llamadas bloqueadas (sin sonido ni vibración)</string>
+    <string name="home_subtitle">Tu escudo contra llamadas desconocidas</string>
+    <string name="stat_today">Hoy</string>
+    <string name="stat_week">7 días</string>
+    <string name="stat_allowed">Permitidos</string>
+    <string name="section_exceptions">Quién más puede entrar</string>
+    <string name="section_protection">Protección y avisos</string>
+    <string name="recent_title">Permitir a quien llamaste</string>
+    <string name="recent_body">Si llamaste a un número en los últimos 7 días, cuando te devuelva la llamada entra</string>
+    <string name="foreign_title">Bloquear internacionales</string>
+    <string name="foreign_body">Rechaza a los desconocidos que no empiecen por +%s, también fuera del horario y aunque insistan</string>
+    <string name="foreign_unknown">No se detectó el país de tu SIM</string>
+    <string name="silence_title">Silenciar en vez de rechazar</string>
+    <string name="silence_body">Las llamadas bloqueadas entran sin sonar: puedes contestar si estás mirando el celular; si no, quedan como perdidas</string>
     <string name="rules_title">Reglas</string>
     <string name="rule_none">Ninguna llamada entra</string>
     <string name="rule_list">Tus contactos NO entran si no están en la lista</string>
@@ -60,6 +73,9 @@
     </plurals>
     <string name="rule_hidden">Números ocultos o privados: bloqueados</string>
     <string name="rule_repeat">Llamadas insistentes: la segunda entra</string>
+    <string name="rule_recent">Números a los que llamaste (7 días): entran</string>
+    <string name="rule_foreign">Internacionales (no +%s): bloqueados siempre</string>
+    <string name="rule_silence">Las bloqueadas se silencian en vez de rechazarse</string>
     <plurals name="rule_blocked_count">
         <item quantity="one">%d llamada bloqueada en el historial</item>
         <item quantity="many">%d llamadas bloqueadas en el historial</item>
@@ -81,7 +97,10 @@
     <string name="action_remove">Quitar</string>
     <string name="action_from_contacts">Desde contactos</string>
     <string name="action_add_number">Agregar número</string>
-    <string name="blocked_subtitle">Llamadas que BlockCall rechazó por ti</string>
+    <string name="blocked_subtitle">Llamadas rechazadas o silenciadas</string>
+    <string name="day_today">Hoy</string>
+    <string name="day_yesterday">Ayer</string>
+    <string name="silenced_tag">Silenciada</string>
     <string name="action_clear_history">Borrar historial</string>
     <string name="blocked_empty_title">Sin llamadas bloqueadas</string>
     <string name="blocked_empty_body">Aquí verás los números que fueron rechazados.</string>
@@ -133,6 +152,7 @@
     <string name="ob_done_always">Protección activa siempre (puedes poner un horario, p. ej. de 20:00 a 06:00)</string>
     <string name="ob_done_repeat">Si el mismo número insiste 2 veces en 3 minutos, la segunda entra (útil en emergencias)</string>
     <string name="ob_done_notify">Aviso silencioso de cada llamada bloqueada</string>
+    <string name="ob_done_recent">Si tú llamas a un número, su llamada de vuelta entra durante 7 días</string>
     <string name="ob_done_missing_role">Aún falta permitir el filtro de llamadas: BlockCall no bloqueará nada hasta que lo concedas desde Inicio.</string>
     <string name="ob_start">Empezar</string>
     <string name="ob_choose">Elegir BlockCall</string>

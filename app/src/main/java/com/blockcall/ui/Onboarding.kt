@@ -30,6 +30,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.rounded.CallMade
 import androidx.compose.material.icons.rounded.BatteryChargingFull
 import androidx.compose.material.icons.rounded.CheckCircle
 import androidx.compose.material.icons.rounded.Contacts
@@ -201,6 +202,7 @@ fun OnboardingScreen(store: Store, setup: Setup, onSetupChanged: () -> Unit) {
                     Bullet(Icons.Rounded.Contacts, stringResource(R.string.who_contacts_body))
                     Bullet(Icons.Rounded.VisibilityOff, stringResource(R.string.rule_hidden))
                     Bullet(Icons.Rounded.Replay, stringResource(R.string.ob_done_repeat))
+                    Bullet(Icons.AutoMirrored.Rounded.CallMade, stringResource(R.string.ob_done_recent))
                     Bullet(Icons.Rounded.NotificationsNone, stringResource(R.string.ob_done_notify))
                     if (!setup.hasRole) Problem(stringResource(R.string.ob_done_missing_role))
                 }

@@ -29,6 +29,15 @@ class SimConnectionService : ConnectionService() {
         return connection
     }
 
+    override fun onCreateOutgoingConnection(account: PhoneAccountHandle?, request: ConnectionRequest): Connection {
+        val connection = SimConnection()
+        connection.setAddress(request.address, TelecomManager.PRESENTATION_ALLOWED)
+        connection.setDialing()
+        // Se cuelga sola a los pocos segundos: solo importa que Telecom la registre como saliente.
+        Handler(Looper.getMainLooper()).postDelayed({ connection.end(DisconnectCause.LOCAL, "saliente terminada") }, 4_000)
+        return connection
+    }
+
     override fun onCreateIncomingConnectionFailed(account: PhoneAccountHandle?, request: ConnectionRequest?) {
         Log.e(TriggerReceiver.TAG, "Telecom rechazó crear la llamada")
     }

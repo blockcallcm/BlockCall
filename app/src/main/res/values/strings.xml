@@ -51,6 +51,19 @@
     <string name="repeat_disabled">Not available with “Nobody”: every call is rejected</string>
     <string name="notify_title">Notify me of blocks</string>
     <string name="notify_body">Silent notification with blocked calls (no sound or vibration)</string>
+    <string name="home_subtitle">Your shield against unknown callers</string>
+    <string name="stat_today">Today</string>
+    <string name="stat_week">7 days</string>
+    <string name="stat_allowed">Allowed</string>
+    <string name="section_exceptions">Who else can get through</string>
+    <string name="section_protection">Protection and alerts</string>
+    <string name="recent_title">Allow people you called</string>
+    <string name="recent_body">If you called a number in the last 7 days, their call back rings</string>
+    <string name="foreign_title">Block international calls</string>
+    <string name="foreign_body">Rejects unknown numbers that don\'t start with +%s, even outside the schedule and if they insist</string>
+    <string name="foreign_unknown">Couldn\'t detect your SIM\'s country</string>
+    <string name="silence_title">Silence instead of reject</string>
+    <string name="silence_body">Blocked calls come in without ringing: answer if you\'re looking at your phone; otherwise they\'re missed</string>
     <string name="rules_title">Rules</string>
     <string name="rule_none">No calls get through</string>
     <string name="rule_list">Your contacts do NOT get through unless they\'re on the list</string>
@@ -61,6 +74,9 @@
     </plurals>
     <string name="rule_hidden">Hidden or private numbers: blocked</string>
     <string name="rule_repeat">Repeated callers: the second call rings</string>
+    <string name="rule_recent">Numbers you called (7 days): get through</string>
+    <string name="rule_foreign">International (not +%s): always blocked</string>
+    <string name="rule_silence">Blocked calls are silenced instead of rejected</string>
     <plurals name="rule_blocked_count">
         <item quantity="one">%d blocked call in history</item>
         <item quantity="other">%d blocked calls in history</item>
@@ -81,7 +97,10 @@
     <string name="action_remove">Remove</string>
     <string name="action_from_contacts">From contacts</string>
     <string name="action_add_number">Add number</string>
-    <string name="blocked_subtitle">Calls BlockCall rejected for you</string>
+    <string name="blocked_subtitle">Rejected or silenced calls</string>
+    <string name="day_today">Today</string>
+    <string name="day_yesterday">Yesterday</string>
+    <string name="silenced_tag">Silenced</string>
     <string name="action_clear_history">Clear history</string>
     <string name="blocked_empty_title">No blocked calls</string>
     <string name="blocked_empty_body">Rejected numbers will show up here.</string>
@@ -132,6 +151,7 @@
     <string name="ob_done_always">Always on (you can set a schedule, e.g. 20:00 to 06:00)</string>
     <string name="ob_done_repeat">If the same number calls twice within 3 minutes, the second call rings (useful in emergencies)</string>
     <string name="ob_done_notify">Silent notice for each blocked call</string>
+    <string name="ob_done_recent">If you call a number, their call back gets through for 7 days</string>
     <string name="ob_done_missing_role">Call screening is still missing: BlockCall won\'t block anything until you grant it from Home.</string>
     <string name="ob_start">Get started</string>
     <string name="ob_choose">Choose BlockCall</string>

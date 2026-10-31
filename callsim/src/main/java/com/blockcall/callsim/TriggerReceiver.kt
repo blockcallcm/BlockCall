@@ -36,6 +36,17 @@ class TriggerReceiver : BroadcastReceiver() {
                 telecom.addNewIncomingCall(handle, extras)
                 Log.i(TAG, "Llamada inyectada: ${if (hidden) "oculto" else number}")
             }
+            // Saliente falsa por la cuenta del simulador: no usa la SIM ni cuesta nada.
+            "dial" -> {
+                val number = intent.getStringExtra("number").orEmpty()
+                val extras = Bundle().apply { putParcelable(TelecomManager.EXTRA_PHONE_ACCOUNT_HANDLE, handle) }
+                try {
+                    telecom.placeCall(Uri.fromParts(PhoneAccount.SCHEME_TEL, number, null), extras)
+                    Log.i(TAG, "Saliente simulada: $number")
+                } catch (e: SecurityException) {
+                    Log.e(TAG, "Falta el permiso CALL_PHONE (pm grant com.blockcall.callsim android.permission.CALL_PHONE)")
+                }
+            }
         }
     }
 

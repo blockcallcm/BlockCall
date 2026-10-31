@@ -1,0 +1,5 @@
+• Nuevo: «Permitir a quien llamaste». Si tú llamaste a un número en los últimos 7 días, su llamada de vuelta entra.
+• Nuevo: «Bloquear internacionales». Rechaza a los desconocidos de otros países (detecta tu indicativo solo), también fuera del horario y aunque insistan.
+• Nuevo: «Silenciar en vez de rechazar». Las bloqueadas entran sin sonar y puedes contestarlas si estás mirando el celular.
+• Diseño renovado: tarjeta principal con estadísticas, ajustes agrupados e historial por días.
+• Nuevo logo.

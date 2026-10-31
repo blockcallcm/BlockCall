@@ -12,6 +12,9 @@ BlockCall silently rejects incoming calls from numbers you don't know: they don'
 <li>Always on, or on a schedule (for example 20:00 to 06:00, across midnight).</li>
 <li>Hidden or private numbers are blocked.</li>
 <li>Allow if they insist: if the same number calls twice within 3 minutes, the second call rings (useful for emergencies).</li>
+<li>Allow people you called: if you called a number in the last 7 days, their call back gets through.</li>
+<li>Block international calls: rejects unknown callers that don't start with your country code (e.g. +1), even outside the schedule. The code is detected automatically.</li>
+<li>Silence instead of reject: blocked calls come in without ringing, and you can answer if you're looking at your phone.</li>
 <li>History of blocked calls, with a button to allow the number.</li>
 <li>A single silent notification summarizing blocked calls.</li>
 <li>Setup assistant that explains each Android permission step by step.</li>

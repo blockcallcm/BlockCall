@@ -12,7 +12,7 @@ import java.util.Calendar
 
 data class AllowedNumber(val number: String, val name: String)
 
-data class BlockedCall(val number: String, val time: Long)
+data class BlockedCall(val number: String, val time: Long, val silenced: Boolean = false)
 
 data class Settings(
     val enabled: Boolean = false,
@@ -25,6 +25,9 @@ data class Settings(
     val lastSeen: Long = 0,
     val theme: Int = THEME_SYSTEM,
     val onboarded: Boolean = false,
+    val silence: Boolean = false,
+    val allowRecent: Boolean = true,
+    val blockForeign: Boolean = false,
 )
 
 /** Quién puede llamar mientras el filtro está activo. */
@@ -80,6 +83,9 @@ class Store private constructor(context: Context) {
         lastSeen = prefs.getLong(KEY_LAST_SEEN, 0),
         theme = prefs.getInt(KEY_THEME, THEME_SYSTEM),
         onboarded = prefs.getBoolean(KEY_ONBOARDED, false),
+        silence = prefs.getBoolean(KEY_SILENCE, false),
+        allowRecent = prefs.getBoolean(KEY_RECENT_ON, true),
+        blockForeign = prefs.getBoolean(KEY_FOREIGN, false),
     )
 
     fun setEnabled(value: Boolean) = edit { putBoolean(KEY_ENABLED, value) }
@@ -89,6 +95,14 @@ class Store private constructor(context: Context) {
     fun setAllowRepeated(value: Boolean) = edit { putBoolean(KEY_REPEATED, value) }
     fun setAllowMode(value: Int) = edit { putInt(KEY_ALLOW_MODE, value) }
     fun setNotify(value: Boolean) = edit { putBoolean(KEY_NOTIFY, value) }
+    fun setSilence(value: Boolean) = edit { putBoolean(KEY_SILENCE, value) }
+    fun setBlockForeign(value: Boolean) = edit { putBoolean(KEY_FOREIGN, value) }
+
+    // Al apagarlo se olvidan los números guardados: no conservar más datos de los necesarios.
+    fun setAllowRecent(value: Boolean) = edit {
+        putBoolean(KEY_RECENT_ON, value)
+        if (!value) putString(KEY_RECENT, "[]")
+    }
 
     /** Marca el historial como visto: reinicia el contador de la pestaña y de la notificación. */
     fun markSeen() = edit { putLong(KEY_LAST_SEEN, System.currentTimeMillis()) }
@@ -103,6 +117,7 @@ class Store private constructor(context: Context) {
         putInt(KEY_ALLOW_MODE, ALLOW_CONTACTS)
         putBoolean(KEY_REPEATED, true)
         putBoolean(KEY_NOTIFY, true)
+        putBoolean(KEY_RECENT_ON, true)
     }
 
     /** Llamada insistente: el mismo número ya fue bloqueado hace menos de [REPEAT_WINDOW_MS]. */
@@ -123,6 +138,38 @@ class Store private constructor(context: Context) {
         } else {
             minute >= s.startMinute || minute < s.endMinute
         }
+    }
+
+    // --- Números a los que llamaste ---
+
+    // Solo en el teléfono y solo [RECENT_WINDOW_MS]: lo justo para dejar pasar la devolución de una llamada.
+    private fun readRecent(): List<BlockedCall> = try {
+        val arr = JSONArray(prefs.getString(KEY_RECENT, "[]"))
+        List(arr.length()) {
+            val o = arr.getJSONObject(it)
+            BlockedCall(o.getString("n"), o.getLong("t"))
+        }
+    } catch (_: JSONException) {
+        emptyList()
+    }
+
+    /** Recuerda un número que marcó el usuario, si la opción está activa. */
+    fun rememberOutgoing(number: String) {
+        if (!readSettings().allowRecent) return
+        val now = System.currentTimeMillis()
+        val list = (listOf(BlockedCall(number, now)) +
+            readRecent().filter { now - it.time < RECENT_WINDOW_MS && !PhoneNumberUtils.compare(it.number, number) })
+            .take(MAX_RECENT)
+        val arr = JSONArray()
+        list.forEach { arr.put(JSONObject().put("n", it.number).put("t", it.time)) }
+        edit(sync = true) { putString(KEY_RECENT, arr.toString()) }
+    }
+
+    /** ¿El usuario llamó a este número en los últimos [RECENT_WINDOW_MS]? */
+    fun isRecentlyCalled(number: String): Boolean {
+        if (!readSettings().allowRecent) return false
+        val since = System.currentTimeMillis() - RECENT_WINDOW_MS
+        return readRecent().any { it.time >= since && PhoneNumberUtils.compare(it.number, number) }
     }
 
     // --- Lista de permitidos ---
@@ -159,16 +206,16 @@ class Store private constructor(context: Context) {
         val arr = JSONArray(prefs.getString(KEY_LOG, "[]"))
         List(arr.length()) {
             val o = arr.getJSONObject(it)
-            BlockedCall(o.getString("n"), o.getLong("t"))
+            BlockedCall(o.getString("n"), o.getLong("t"), o.optBoolean("s"))
         }
     } catch (_: JSONException) {
         emptyList()
     }
 
-    fun addToLog(number: String) {
-        val list = (listOf(BlockedCall(number, System.currentTimeMillis())) + readLog()).take(MAX_LOG)
+    fun addToLog(number: String, silenced: Boolean = false) {
+        val list = (listOf(BlockedCall(number, System.currentTimeMillis(), silenced)) + readLog()).take(MAX_LOG)
         val arr = JSONArray()
-        list.forEach { arr.put(JSONObject().put("n", it.number).put("t", it.time)) }
+        list.forEach { arr.put(JSONObject().put("n", it.number).put("t", it.time).apply { if (it.silenced) put("s", true) }) }
         edit(sync = true) { putString(KEY_LOG, arr.toString()) }
     }
 
@@ -190,6 +237,12 @@ class Store private constructor(context: Context) {
         private const val KEY_ALLOWED = "allowed"
         private const val KEY_LOG = "log"
         private const val MAX_LOG = 100
+        private const val KEY_SILENCE = "silence"
+        private const val KEY_FOREIGN = "block_foreign"
+        private const val KEY_RECENT_ON = "allow_recent"
+        private const val KEY_RECENT = "recent"
+        private const val MAX_RECENT = 50
+        const val RECENT_WINDOW_MS = 7 * 24 * 60 * 60 * 1000L
 
         /** Número vacío en el historial = llamada de número oculto. */
         const val HIDDEN = ""
