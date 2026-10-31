@@ -8,9 +8,9 @@ Android app (10+) that silently rejects incoming calls from numbers that aren't 
 
 <p>
   <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/3.png" width="200" alt="Home">
-  <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/4.png" width="200" alt="New rules">
-  <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/8.png" width="200" alt="Allowed list">
-  <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/9.png" width="200" alt="Blocked calls">
+  <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/4.png" width="200" alt="Temporary pause">
+  <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/9.png" width="200" alt="Allowed list">
+  <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/10.png" width="200" alt="Blocked calls">
 </p>
 
 ## Features
@@ -21,6 +21,7 @@ Android app (10+) that silently rejects incoming calls from numbers that aren't 
 - **Allow people you called**: if you called a number in the last 7 days, their call back gets through.
 - **Block international calls**: rejects unknown callers without your country code (detected from the SIM), even outside the schedule.
 - **Silence instead of reject**: blocked calls come in without ringing, so you can still answer.
+- **Temporary pause**: let everyone through for 30 min, 1 h, 2 h or until a time you choose; then protection turns back on by itself. Countdown notification and a Quick Settings button.
 - History of blocked calls, a single silent notification, light/dark theme.
 - First-run assistant that explains each Android permission prompt.
 

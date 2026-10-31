@@ -8,9 +8,9 @@ App Android (10+) que rechaza en silencio las llamadas entrantes de números que
 
 <p>
   <img src="fastlane/metadata/android/es-ES/images/phoneScreenshots/3.png" width="200" alt="Inicio">
-  <img src="fastlane/metadata/android/es-ES/images/phoneScreenshots/4.png" width="200" alt="Reglas nuevas">
-  <img src="fastlane/metadata/android/es-ES/images/phoneScreenshots/8.png" width="200" alt="Permitidos">
-  <img src="fastlane/metadata/android/es-ES/images/phoneScreenshots/9.png" width="200" alt="Bloqueadas">
+  <img src="fastlane/metadata/android/es-ES/images/phoneScreenshots/4.png" width="200" alt="Pausa temporal">
+  <img src="fastlane/metadata/android/es-ES/images/phoneScreenshots/9.png" width="200" alt="Permitidos">
+  <img src="fastlane/metadata/android/es-ES/images/phoneScreenshots/10.png" width="200" alt="Bloqueadas">
 </p>
 
 ## Funciones
@@ -21,6 +21,7 @@ App Android (10+) que rechaza en silencio las llamadas entrantes de números que
 - **Permitir a quien llamaste**: si tú llamaste a un número en los últimos 7 días, su llamada de vuelta entra.
 - **Bloquear internacionales**: rechaza a los desconocidos sin el indicativo de tu país (se detecta de la SIM), también fuera del horario.
 - **Silenciar en vez de rechazar**: las bloqueadas entran sin sonar y aún puedes contestar.
+- **Pausa temporal**: deja pasar a todos 30 min, 1 h, 2 h o hasta la hora que elijas; luego la protección vuelve sola. Aviso con cuenta atrás y botón en los ajustes rápidos.
 - Historial de bloqueadas, un único aviso silencioso, tema claro/oscuro.
 - Asistente al primer inicio que explica cada aviso de permisos de Android.
 

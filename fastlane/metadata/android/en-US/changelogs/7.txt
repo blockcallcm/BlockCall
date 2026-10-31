@@ -1,0 +1,4 @@
+• New: temporary pause. Expecting a call? Let everyone through for 30 min, 1 h, 2 h or until a time you choose; then protection turns back on by itself.
+• While paused, a notification with a countdown and a "Resume now" button.
+• New Quick Settings button: each tap pauses for 30 min, 1 h or 2 h, then goes back on.
+• Main card in the logo colors, softer in dark mode and with better contrast.

@@ -21,8 +21,8 @@ android {
         applicationId = "io.github.blockcallcm.blockcall"
         minSdk = 29
         targetSdk = 35
-        versionCode = 6
-        versionName = "1.4"
+        versionCode = 7
+        versionName = "1.5"
         manifestPlaceholders["appLabel"] = "BlockCall"
         // Solo inglés (base) y español: descarta las traducciones de las librerías y aligera el APK.
         resourceConfigurations += listOf("en", "es")

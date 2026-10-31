@@ -19,6 +19,34 @@
     <string name="status_setup_body">Concede los permisos para empezar</string>
     <string name="problem_no_role">BlockCall no es tu app de filtro de llamadas (quizá otra app lo tomó). Toca «Conceder»</string>
     <string name="problem_no_contacts">Sin acceso a contactos: no se está filtrando ninguna llamada</string>
+    <string name="status_paused_title">En pausa</string>
+    <string name="status_paused_body">Entran todas las llamadas hasta las %s</string>
+    <string name="pause_title">Pausa temporal</string>
+    <string name="pause_body">¿Esperas una llamada? Deja pasar a todos un rato</string>
+    <string name="pause_running_body">Después la protección vuelve sola</string>
+    <string name="pause_left_minutes">Quedan %d min</string>
+    <string name="pause_left_hours">Quedan %1$d h %2$d min</string>
+    <string name="pause_left_hours_only">Quedan %d h</string>
+    <string name="pause_minutes">%d min</string>
+    <string name="pause_hours">%d h</string>
+    <string name="action_resume">Reanudar ahora</string>
+    <string name="pause_custom">Personalizada</string>
+    <string name="dialog_pause_until">Dejar pasar todas hasta</string>
+
+    <string name="pause_channel_name">Pausa temporal</string>
+    <string name="pause_channel_description">Aviso mientras dejas pasar todas las llamadas</string>
+    <string name="pause_notification_title">BlockCall en pausa</string>
+
+    <!-- Ajustes rápidos -->
+    <string name="shortcut_title">Botón en la cortina</string>
+    <string name="shortcut_body">Pausa sin abrir la app: cada toque pasa a 30 min, 1 h, 2 h y de vuelta a activa</string>
+    <string name="action_add">Agregar</string>
+    <string name="tile_label">BlockCall</string>
+    <string name="tile_already_added">BlockCall ya está en tu cortina</string>
+    <string name="tile_on">Activa</string>
+    <string name="tile_off">Apagada</string>
+    <string name="tile_paused_until">Pausa hasta %s</string>
+    <string name="tile_paused_hint">Toca para más tiempo</string>
 
     <!-- Tarjeta de permisos -->
     <string name="setup_title">Permisos necesarios</string>

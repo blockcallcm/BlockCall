@@ -15,6 +15,8 @@ BlockCall rechaza en silencio las llamadas entrantes de números que no conoces:
 <li>Permitir a quien llamaste: si tú llamaste a un número en los últimos 7 días, su llamada de vuelta entra.</li>
 <li>Bloquear internacionales: rechaza a los desconocidos que no empiecen por el indicativo de tu país (p. ej. +57), también fuera del horario. El indicativo se detecta solo.</li>
 <li>Silenciar en vez de rechazar: las llamadas bloqueadas entran sin sonar y puedes contestarlas si estás mirando el celular.</li>
+<li>Pausa temporal: ¿esperas una llamada? Deja pasar a todos 30 min, 1 h, 2 h o hasta la hora que elijas; después la protección vuelve sola. Un aviso con cuenta atrás te lo recuerda.</li>
+<li>Botón en los ajustes rápidos para pausar sin abrir la app.</li>
 <li>Historial de llamadas bloqueadas con un botón para permitir el número.</li>
 <li>Un único aviso silencioso con las llamadas bloqueadas.</li>
 <li>Asistente que explica cada permiso de Android paso a paso.</li>

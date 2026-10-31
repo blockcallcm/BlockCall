@@ -2,6 +2,7 @@ package com.blockcall.ui
 
 import android.Manifest
 import android.app.role.RoleManager
+import android.os.Build
 import android.text.format.DateUtils
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -14,6 +15,7 @@ import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -40,19 +42,26 @@ import androidx.compose.material.icons.rounded.Bedtime
 import androidx.compose.material.icons.rounded.Contacts
 import androidx.compose.material.icons.rounded.GppGood
 import androidx.compose.material.icons.rounded.NotificationsNone
+import androidx.compose.material.icons.rounded.Pause
+import androidx.compose.material.icons.rounded.PauseCircle
 import androidx.compose.material.icons.rounded.PhoneDisabled
+import androidx.compose.material.icons.rounded.PlayArrow
 import androidx.compose.material.icons.rounded.PlaylistAddCheck
 import androidx.compose.material.icons.rounded.Public
 import androidx.compose.material.icons.rounded.Replay
+import androidx.compose.material.icons.rounded.Schedule
 import androidx.compose.material.icons.rounded.Shield
+import androidx.compose.material.icons.rounded.Timer
 import androidx.compose.material.icons.rounded.VisibilityOff
 import androidx.compose.material.icons.rounded.WarningAmber
 import androidx.compose.material.icons.rounded.WbSunny
+import androidx.compose.material.icons.rounded.Widgets
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
@@ -81,6 +90,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.graphics.luminance
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.pluralStringResource
@@ -103,7 +114,9 @@ import com.blockcall.Store
 import com.blockcall.THEME_DARK
 import com.blockcall.THEME_LIGHT
 import com.blockcall.THEME_SYSTEM
+import com.blockcall.Tiles
 import kotlinx.coroutines.delay
+import java.util.Calendar
 
 // Acentos fijos de los iconos de ajustes: se distinguen de un vistazo con cualquier tema.
 private val Green = Color(0xFF30B566)
@@ -111,6 +124,45 @@ private val Blue = Color(0xFF2F80ED)
 private val Orange = Color(0xFFF2994A)
 private val Purple = Color(0xFF9B51E0)
 private val Pink = Color(0xFFEB5787)
+
+// Tarjeta de estado: el degradado del icono (índigo → violeta → magenta) y uno ámbar para la pausa.
+// En tema oscuro, tonos más profundos: Material desaconseja colores muy saturados sobre fondo oscuro.
+// Todos con contraste de texto ≥ 4,5:1 (WCAG AA).
+private val BrandIndigo = Color(0xFF4F46E5)
+private val BrandViolet = Color(0xFF7C3AED)
+private val BrandMagenta = Color(0xFFC026D3)
+private val BrandIndigoDark = Color(0xFF3730A3)
+private val BrandVioletDark = Color(0xFF6D28D9)
+private val BrandMagentaDark = Color(0xFFA21CAF)
+private val PauseAmber = Color(0xFFFBBF24)
+private val PauseOrange = Color(0xFFF59E0B)
+private val PauseDeepOrange = Color(0xFFF97316)
+private val OnPause = Color(0xFF2B1300)
+// Ámbar dorado apagado (tono ~39°): los ámbares profundos tiran a naranja rojizo y se confunden con error.
+private val PauseAmberDark = Color(0xFFD9A441)
+private val PauseOrangeDark = Color(0xFFC9952F)
+private val PauseDeepOrangeDark = Color(0xFFB8862B)
+
+/**
+ * Acerca el tono de un color fijo al color principal del tema, como MaterialColors.harmonize de Material:
+ * gira el tono la mitad de la diferencia, como mucho 15°. Así los acentos combinan con el fondo de
+ * pantalla (Material You) sin perder su significado. Solo se aplica a los iconos de los ajustes: ni el
+ * degradado de marca ni el ámbar de la pausa (con un tema azul el giro lo volvería rojo, color de error).
+ */
+private fun Color.harmonizeWith(source: Color): Color {
+    val hsv = FloatArray(3).also { android.graphics.Color.colorToHSV(toArgb(), it) }
+    val target = FloatArray(3).also { android.graphics.Color.colorToHSV(source.toArgb(), it) }
+    val diff = (target[0] - hsv[0] + 540f) % 360f - 180f
+    hsv[0] = (hsv[0] + (diff / 2f).coerceIn(-15f, 15f) + 360f) % 360f
+    return Color(android.graphics.Color.HSVToColor(hsv)).copy(alpha = alpha)
+}
+
+/** [harmonizeWith] con el color principal del tema actual. */
+@Composable
+private fun Color.harmonized(): Color {
+    val primary = MaterialTheme.colorScheme.primary
+    return remember(this, primary) { harmonizeWith(primary) }
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -132,6 +184,8 @@ fun HomeScreen(store: Store, setup: Setup, onSetupChanged: () -> Unit, modifier:
         }
     }
     val filteringNow = remember(settings, tick) { store.isFilteringNow() }
+    val paused = remember(settings, tick) { settings.isPaused() }
+    val pauseLeftMs = remember(settings, tick) { settings.pausedUntil - System.currentTimeMillis() }
     val today = remember(log, tick) { log.count { DateUtils.isToday(it.time) } }
     val week = remember(log, tick) { log.count { System.currentTimeMillis() - it.time < 7 * DateUtils.DAY_IN_MILLIS } }
 
@@ -158,6 +212,7 @@ fun HomeScreen(store: Store, setup: Setup, onSetupChanged: () -> Unit, modifier:
     }
 
     var editing by remember { mutableStateOf<Boolean?>(null) } // true = inicio, false = fin
+    var pickingPause by remember { mutableStateOf(false) }
     val noneMode = settings.allowMode == ALLOW_NONE
 
     Column(
@@ -177,7 +232,10 @@ fun HomeScreen(store: Store, setup: Setup, onSetupChanged: () -> Unit, modifier:
         val ready = setup.hasRole && (setup.hasContacts || !needsContacts)
         StatusCard(
             enabled = settings.enabled,
-            active = filteringNow && ready,
+            active = filteringNow && ready && !paused,
+            pausedUntil = if (paused) Tiles.until(context, settings.pausedUntil) else null,
+            pauseLeftMinutes = ((pauseLeftMs + 59_999) / 60_000).toInt(),
+            pauseProgress = pauseLeftMs.toFloat() / (settings.pausedUntil - settings.pausedAt).coerceAtLeast(1),
             scheduled = settings.scheduled,
             allowMode = settings.allowMode,
             problem = when {
@@ -190,6 +248,9 @@ fun HomeScreen(store: Store, setup: Setup, onSetupChanged: () -> Unit, modifier:
                 store.setEnabled(on)
                 if (on && !setup.ready) requestSetup()
             },
+            onPause = store::pause,
+            onPickTime = { pickingPause = true },
+            onResume = store::resume,
         )
 
         AnimatedVisibility(!setup.ready) {
@@ -307,6 +368,18 @@ fun HomeScreen(store: Store, setup: Setup, onSetupChanged: () -> Unit, modifier:
                     }
                 },
             )
+            // Solo Android 13+ permite pedir que se agregue.
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                RowDivider()
+                ActionRow(
+                    icon = Icons.Rounded.Widgets,
+                    accent = BrandIndigo,
+                    title = stringResource(R.string.shortcut_title),
+                    body = stringResource(R.string.shortcut_body),
+                    action = stringResource(R.string.action_add),
+                    onClick = { Tiles.requestAdd(context) },
+                )
+            }
         }
 
         SectionCard(stringResource(R.string.rules_title)) {
@@ -354,33 +427,83 @@ fun HomeScreen(store: Store, setup: Setup, onSetupChanged: () -> Unit, modifier:
             },
         )
     }
+
+    if (pickingPause) {
+        val now = Calendar.getInstance()
+        TimeDialog(
+            // Propuesta inicial: dentro de 3 horas, en punto.
+            initialMinute = (now.get(Calendar.HOUR_OF_DAY) + 3) % 24 * 60,
+            title = stringResource(R.string.dialog_pause_until),
+            onDismiss = { pickingPause = false },
+            onConfirm = { minute ->
+                store.pauseUntil(nextTimeAt(minute))
+                pickingPause = false
+            },
+        )
+    }
+}
+
+/** Próxima vez que el reloj marque [minuteOfDay]: hoy si aún no ha pasado, si no mañana. */
+private fun nextTimeAt(minuteOfDay: Int): Long {
+    val target = Calendar.getInstance().apply {
+        set(Calendar.HOUR_OF_DAY, minuteOfDay / 60)
+        set(Calendar.MINUTE, minuteOfDay % 60)
+        set(Calendar.SECOND, 0)
+        set(Calendar.MILLISECOND, 0)
+    }
+    if (target.timeInMillis <= System.currentTimeMillis()) target.add(Calendar.DAY_OF_YEAR, 1)
+    return target.timeInMillis
 }
 
 @Composable
 private fun StatusCard(
     enabled: Boolean,
     active: Boolean,
+    pausedUntil: String?,
+    pauseLeftMinutes: Int,
+    pauseProgress: Float,
     scheduled: Boolean,
     allowMode: Int,
     problem: String?,
     stats: List<Pair<Int, Int>>,
     onToggle: (Boolean) -> Unit,
+    onPause: (Int) -> Unit,
+    onPickTime: () -> Unit,
+    onResume: () -> Unit,
 ) {
     val colors = MaterialTheme.colorScheme
     // Encendida pero sin poder filtrar (p. ej. Truecaller recuperó el rol): se marca en rojo.
     val broken = enabled && problem != null
+    val paused = pausedUntil != null && !broken
+    val dark = colors.surface.luminance() < 0.5f
+    // Activa (marca) y en pausa (ámbar de atención): colores fijos, no dependen del fondo de pantalla.
+    // Ambos más profundos en tema oscuro.
+    val pauseStart = if (dark) PauseAmberDark else PauseAmber
+    val pauseMid = if (dark) PauseOrangeDark else PauseOrange
+    val pauseEnd = if (dark) PauseDeepOrangeDark else PauseDeepOrange
     val start by animateColorAsState(
         when {
             broken -> colors.errorContainer
-            active -> colors.primary
+            paused -> pauseStart
+            active -> if (dark) BrandIndigoDark else BrandIndigo
             else -> colors.surfaceContainerHighest
         },
         label = "start",
     )
+    val mid by animateColorAsState(
+        when {
+            broken -> colors.errorContainer
+            paused -> pauseMid
+            active -> if (dark) BrandVioletDark else BrandViolet
+            else -> colors.surfaceContainerHighest
+        },
+        label = "mid",
+    )
     val end by animateColorAsState(
         when {
             broken -> colors.errorContainer
-            active -> colors.tertiary
+            paused -> pauseEnd
+            active -> if (dark) BrandMagentaDark else BrandMagenta
             else -> colors.surfaceContainerHigh
         },
         label = "end",
@@ -388,7 +511,8 @@ private fun StatusCard(
     val content by animateColorAsState(
         when {
             broken -> colors.onErrorContainer
-            active -> colors.onPrimary
+            paused -> OnPause
+            active -> Color.White
             else -> colors.onSurfaceVariant
         },
         label = "fg",
@@ -396,6 +520,7 @@ private fun StatusCard(
     val (title, subtitle) = when {
         !enabled -> stringResource(R.string.status_off_title) to stringResource(R.string.status_off_body)
         broken -> stringResource(R.string.status_broken_title) to problem.orEmpty()
+        paused -> stringResource(R.string.status_paused_title) to stringResource(R.string.status_paused_body, pausedUntil.orEmpty())
         active -> stringResource(R.string.status_active_title) to stringResource(
             when (allowMode) {
                 ALLOW_NONE -> R.string.status_active_none
@@ -411,7 +536,7 @@ private fun StatusCard(
         Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(32.dp))
-            .background(Brush.linearGradient(listOf(start, end))),
+            .background(Brush.linearGradient(0f to start, 0.6f to mid, 1f to end)),
     ) {
         // Escudo de fondo, solo decorativo: arriba a la derecha, sin pasar por detrás del interruptor.
         Icon(
@@ -425,12 +550,12 @@ private fun StatusCard(
         )
         CompositionLocalProvider(LocalContentColor provides content) {
             Column(Modifier.padding(24.dp)) {
-                ShieldBadge(active = active && !broken, tint = content)
+                ShieldBadge(active = active && !broken, paused = paused, tint = content)
                 Spacer(Modifier.height(16.dp))
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Column(Modifier.weight(1f)) {
                         Text(title, style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
-                        Text(subtitle, style = MaterialTheme.typography.bodyMedium, color = content.copy(alpha = 0.85f))
+                        Text(subtitle, style = MaterialTheme.typography.bodyMedium, color = content.copy(alpha = 0.9f))
                     }
                     Spacer(Modifier.size(8.dp))
                     Switch(
@@ -442,6 +567,17 @@ private fun StatusCard(
                             checkedThumbColor = start,
                             checkedBorderColor = content,
                         ),
+                    )
+                }
+                if (enabled && !broken) {
+                    Spacer(Modifier.height(16.dp))
+                    PausePanel(
+                        leftMinutes = if (paused) pauseLeftMinutes else null,
+                        progress = pauseProgress,
+                        tint = content,
+                        onPause = onPause,
+                        onPickTime = onPickTime,
+                        onResume = onResume,
                     )
                 }
                 Spacer(Modifier.height(20.dp))
@@ -459,7 +595,7 @@ private fun StatusCard(
                             Text(
                                 stringResource(label),
                                 style = MaterialTheme.typography.labelSmall,
-                                color = content.copy(alpha = 0.8f),
+                                color = content.copy(alpha = 0.9f),
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis,
                             )
@@ -471,9 +607,119 @@ private fun StatusCard(
     }
 }
 
+/**
+ * Pausa temporal dentro de la tarjeta de estado. Sin pausa: elegir 30 min, 1 h o una hora concreta.
+ * En pausa ([leftMinutes] != null): tiempo restante con barra de progreso y botón para reanudar.
+ */
+@Composable
+private fun PausePanel(
+    leftMinutes: Int?,
+    progress: Float,
+    tint: Color,
+    onPause: (Int) -> Unit,
+    onPickTime: () -> Unit,
+    onResume: () -> Unit,
+) {
+    Column(
+        Modifier
+            .fillMaxWidth()
+            .background(tint.copy(alpha = 0.10f), RoundedCornerShape(22.dp))
+            .padding(14.dp),
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Box(
+                Modifier
+                    .size(36.dp)
+                    .background(tint.copy(alpha = 0.14f), CircleShape),
+                contentAlignment = Alignment.Center,
+            ) {
+                Icon(
+                    if (leftMinutes != null) Icons.Rounded.Timer else Icons.Rounded.PauseCircle,
+                    contentDescription = null,
+                    modifier = Modifier.size(20.dp),
+                )
+            }
+            Spacer(Modifier.size(12.dp))
+            Column(Modifier.weight(1f)) {
+                val title = when {
+                    leftMinutes == null -> stringResource(R.string.pause_title)
+                    leftMinutes < 60 -> stringResource(R.string.pause_left_minutes, leftMinutes)
+                    leftMinutes % 60 == 0 -> stringResource(R.string.pause_left_hours_only, leftMinutes / 60)
+                    else -> stringResource(R.string.pause_left_hours, leftMinutes / 60, leftMinutes % 60)
+                }
+                Text(title, style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.SemiBold)
+                Text(
+                    stringResource(if (leftMinutes != null) R.string.pause_running_body else R.string.pause_body),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = tint.copy(alpha = 0.9f),
+                )
+            }
+        }
+        Spacer(Modifier.height(12.dp))
+        if (leftMinutes != null) {
+            Box(
+                Modifier
+                    .fillMaxWidth()
+                    .height(6.dp)
+                    .clip(CircleShape)
+                    .background(tint.copy(alpha = 0.18f)),
+            ) {
+                Box(
+                    Modifier
+                        .fillMaxWidth(progress.coerceIn(0f, 1f))
+                        .fillMaxHeight()
+                        .background(tint, CircleShape),
+                )
+            }
+            Spacer(Modifier.height(12.dp))
+            Pill(stringResource(R.string.action_resume), Icons.Rounded.PlayArrow, tint, Modifier.fillMaxWidth(), onResume)
+        } else {
+            // Duraciones fijas en una fila y "Personalizada" debajo: caben aun con letra grande.
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                Store.PAUSE_OPTIONS.forEach { minutes ->
+                    val label = if (minutes < 60) {
+                        stringResource(R.string.pause_minutes, minutes)
+                    } else {
+                        stringResource(R.string.pause_hours, minutes / 60)
+                    }
+                    Pill(label, null, tint, Modifier.weight(1f)) { onPause(minutes) }
+                }
+            }
+            Spacer(Modifier.height(8.dp))
+            Pill(stringResource(R.string.pause_custom), Icons.Rounded.Schedule, tint, Modifier.fillMaxWidth(), onPickTime)
+        }
+    }
+}
+
+@Composable
+private fun Pill(text: String, icon: ImageVector?, tint: Color, modifier: Modifier = Modifier, onClick: () -> Unit) {
+    Row(
+        modifier
+            .clip(CircleShape)
+            .background(tint.copy(alpha = 0.16f))
+            .clickable(onClick = onClick)
+            // 48 dp de alto: el mínimo táctil de Material.
+            .padding(horizontal = 8.dp, vertical = 14.dp),
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        icon?.let {
+            Icon(it, contentDescription = null, modifier = Modifier.size(18.dp))
+            Spacer(Modifier.size(6.dp))
+        }
+        Text(
+            text,
+            style = MaterialTheme.typography.labelLarge,
+            fontWeight = FontWeight.SemiBold,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+        )
+    }
+}
+
 /** Escudo con una onda que late mientras la protección está activa (solo con la app en pantalla). */
 @Composable
-private fun ShieldBadge(active: Boolean, tint: Color) {
+private fun ShieldBadge(active: Boolean, paused: Boolean, tint: Color) {
     Box(Modifier.size(72.dp), contentAlignment = Alignment.Center) {
         if (active) {
             val pulse by rememberInfiniteTransition(label = "pulse").animateFloat(
@@ -500,7 +746,12 @@ private fun ShieldBadge(active: Boolean, tint: Color) {
                 .background(tint.copy(alpha = 0.16f), CircleShape),
             contentAlignment = Alignment.Center,
         ) {
-            Icon(if (active) Icons.Rounded.GppGood else Icons.Rounded.Shield, contentDescription = null, tint = tint, modifier = Modifier.size(34.dp))
+            val icon = when {
+                paused -> Icons.Rounded.Pause
+                active -> Icons.Rounded.GppGood
+                else -> Icons.Rounded.Shield
+            }
+            Icon(icon, contentDescription = null, tint = tint, modifier = Modifier.size(34.dp))
         }
     }
 }
@@ -588,10 +839,10 @@ private fun SettingRow(
         Box(
             Modifier
                 .size(40.dp)
-                .background(accent.copy(alpha = 0.16f), RoundedCornerShape(12.dp)),
+                .background(accent.harmonized().copy(alpha = 0.16f), RoundedCornerShape(12.dp)),
             contentAlignment = Alignment.Center,
         ) {
-            Icon(icon, contentDescription = null, tint = accent, modifier = Modifier.size(22.dp))
+            Icon(icon, contentDescription = null, tint = accent.harmonized(), modifier = Modifier.size(22.dp))
         }
         Spacer(Modifier.size(14.dp))
         Column(Modifier.weight(1f)) {
@@ -600,6 +851,34 @@ private fun SettingRow(
         }
         Spacer(Modifier.size(12.dp))
         Switch(checked = checked, onCheckedChange = null, enabled = enabled)
+    }
+}
+
+/** Como [SettingRow], pero con un botón de acción en lugar de interruptor. */
+@Composable
+private fun ActionRow(icon: ImageVector, accent: Color, title: String, body: String, action: String, onClick: () -> Unit) {
+    Row(
+        Modifier
+            .fillMaxWidth()
+            .clickable(onClick = onClick)
+            .padding(horizontal = 16.dp, vertical = 14.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Box(
+            Modifier
+                .size(40.dp)
+                .background(accent.harmonized().copy(alpha = 0.16f), RoundedCornerShape(12.dp)),
+            contentAlignment = Alignment.Center,
+        ) {
+            Icon(icon, contentDescription = null, tint = accent.harmonized(), modifier = Modifier.size(22.dp))
+        }
+        Spacer(Modifier.size(14.dp))
+        Column(Modifier.weight(1f)) {
+            Text(title, style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.SemiBold)
+            Text(body, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        }
+        Spacer(Modifier.size(12.dp))
+        FilledTonalButton(onClick = onClick) { Text(action) }
     }
 }
 

@@ -15,6 +15,8 @@ BlockCall silently rejects incoming calls from numbers you don't know: they don'
 <li>Allow people you called: if you called a number in the last 7 days, their call back gets through.</li>
 <li>Block international calls: rejects unknown callers that don't start with your country code (e.g. +1), even outside the schedule. The code is detected automatically.</li>
 <li>Silence instead of reject: blocked calls come in without ringing, and you can answer if you're looking at your phone.</li>
+<li>Temporary pause: expecting a call? Let everyone through for 30 min, 1 h, 2 h or until a time you choose; then protection turns back on by itself. A countdown notification reminds you.</li>
+<li>Quick Settings button to pause without opening the app.</li>
 <li>History of blocked calls, with a button to allow the number.</li>
 <li>A single silent notification summarizing blocked calls.</li>
 <li>Setup assistant that explains each Android permission step by step.</li>

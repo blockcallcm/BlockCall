@@ -28,7 +28,13 @@ data class Settings(
     val silence: Boolean = false,
     val allowRecent: Boolean = true,
     val blockForeign: Boolean = false,
-)
+    val pausedUntil: Long = 0,
+    val pausedAt: Long = 0,
+    val pauseMinutes: Int = 0,
+) {
+    /** Pausa temporal en curso: entran todas las llamadas hasta [pausedUntil]. */
+    fun isPaused(now: Long = System.currentTimeMillis()) = enabled && pausedUntil > now
+}
 
 /** Quién puede llamar mientras el filtro está activo. */
 const val ALLOW_CONTACTS = 0 // Contactos + lista de permitidos
@@ -45,8 +51,8 @@ const val THEME_DARK = 2
  */
 class Store private constructor(context: Context) {
 
-    private val prefs: SharedPreferences =
-        context.applicationContext.getSharedPreferences("blockcall", Context.MODE_PRIVATE)
+    private val app = context.applicationContext
+    private val prefs: SharedPreferences = app.getSharedPreferences("blockcall", Context.MODE_PRIVATE)
 
     private val _settings = MutableStateFlow(readSettings())
     val settings: StateFlow<Settings> = _settings
@@ -86,9 +92,40 @@ class Store private constructor(context: Context) {
         silence = prefs.getBoolean(KEY_SILENCE, false),
         allowRecent = prefs.getBoolean(KEY_RECENT_ON, true),
         blockForeign = prefs.getBoolean(KEY_FOREIGN, false),
+        pausedUntil = prefs.getLong(KEY_PAUSED_UNTIL, 0),
+        pausedAt = prefs.getLong(KEY_PAUSED_AT, 0),
+        pauseMinutes = prefs.getInt(KEY_PAUSE_MINUTES, 0),
     )
 
-    fun setEnabled(value: Boolean) = edit { putBoolean(KEY_ENABLED, value) }
+    // Encender o apagar la protección cancela cualquier pausa pendiente.
+    fun setEnabled(value: Boolean) {
+        edit { putBoolean(KEY_ENABLED, value).putLong(KEY_PAUSED_UNTIL, 0) }
+        onPauseChanged()
+    }
+
+    /** Botones de la cortina y aviso de pausa reflejan el estado nuevo. */
+    private fun onPauseChanged() {
+        Tiles.refresh(app)
+        PauseNotifier.sync(app, readSettings())
+    }
+    /** Deja pasar todas las llamadas durante [minutes]; después la protección vuelve sola. */
+    fun pause(minutes: Int) = pauseUntil(System.currentTimeMillis() + minutes * 60_000L, minutes)
+
+    /** Pausa hasta una hora elegida por el usuario; [minutes] = 0 si no es una de [PAUSE_OPTIONS]. */
+    fun pauseUntil(time: Long, minutes: Int = 0) {
+        edit {
+            putLong(KEY_PAUSED_UNTIL, time)
+            putLong(KEY_PAUSED_AT, System.currentTimeMillis())
+            putInt(KEY_PAUSE_MINUTES, minutes)
+        }
+        onPauseChanged()
+    }
+
+    fun resume() {
+        edit { putLong(KEY_PAUSED_UNTIL, 0) }
+        onPauseChanged()
+    }
+
     fun setScheduled(value: Boolean) = edit { putBoolean(KEY_SCHEDULED, value) }
     fun setStart(minute: Int) = edit { putInt(KEY_START, minute) }
     fun setEnd(minute: Int) = edit { putInt(KEY_END, minute) }
@@ -243,6 +280,12 @@ class Store private constructor(context: Context) {
         private const val KEY_RECENT = "recent"
         private const val MAX_RECENT = 50
         const val RECENT_WINDOW_MS = 7 * 24 * 60 * 60 * 1000L
+        private const val KEY_PAUSED_UNTIL = "paused_until"
+        private const val KEY_PAUSED_AT = "paused_at"
+        private const val KEY_PAUSE_MINUTES = "pause_minutes"
+
+        /** Duraciones de la pausa temporal, en minutos. */
+        val PAUSE_OPTIONS = listOf(30, 60, 120)
 
         /** Número vacío en el historial = llamada de número oculto. */
         const val HIDDEN = ""

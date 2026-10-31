@@ -1,0 +1,4 @@
+• Nuevo: pausa temporal. ¿Esperas una llamada? Deja pasar a todos durante 30 min, 1 h, 2 h o hasta la hora que elijas; después la protección vuelve sola.
+• Mientras dura la pausa, un aviso con cuenta atrás y el botón «Reanudar ahora».
+• Nuevo botón en los ajustes rápidos: cada toque pausa 30 min, 1 h o 2 h y luego vuelve a activa.
+• Tarjeta principal con los colores del logo, más suaves en modo oscuro y con mejor contraste.

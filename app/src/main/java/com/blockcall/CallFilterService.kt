@@ -74,6 +74,8 @@ class CallFilterService : CallScreeningService() {
         val store = Store.get(this)
         val settings = store.settings.value
         if (!settings.enabled) return "protección apagada"
+        // Pausa temporal ("espero una llamada"): entra todo, también internacionales y ocultos.
+        if (settings.isPaused()) return "en pausa"
         val number = numberOf(details)
 
         // Internacionales: se rechazan también fuera del horario y aunque insistan.

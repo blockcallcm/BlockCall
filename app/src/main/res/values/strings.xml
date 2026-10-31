@@ -22,6 +22,34 @@
     <string name="status_setup_body">Grant the permissions to get started</string>
     <string name="problem_no_role">BlockCall isn\'t your call screening app (another app may have taken over). Tap “Grant”</string>
     <string name="problem_no_contacts">No access to contacts: no calls are being screened</string>
+    <string name="status_paused_title">Paused</string>
+    <string name="status_paused_body">All calls get through until %s</string>
+    <string name="pause_title">Temporary pause</string>
+    <string name="pause_body">Expecting a call? Let everyone through for a while</string>
+    <string name="pause_running_body">Protection turns back on by itself</string>
+    <string name="pause_left_minutes">%d min left</string>
+    <string name="pause_left_hours">%1$d h %2$d min left</string>
+    <string name="pause_left_hours_only">%d h left</string>
+    <string name="pause_minutes">%d min</string>
+    <string name="pause_hours">%d h</string>
+    <string name="action_resume">Resume now</string>
+    <string name="pause_custom">Custom</string>
+    <string name="dialog_pause_until">Let all calls through until</string>
+
+    <string name="pause_channel_name">Temporary pause</string>
+    <string name="pause_channel_description">Notice while all calls are let through</string>
+    <string name="pause_notification_title">BlockCall paused</string>
+
+    <!-- Ajustes rápidos -->
+    <string name="shortcut_title">Quick Settings button</string>
+    <string name="shortcut_body">Pause without opening the app: each tap goes to 30 min, 1 h, 2 h and back on</string>
+    <string name="action_add">Add</string>
+    <string name="tile_label">BlockCall</string>
+    <string name="tile_already_added">BlockCall is already in Quick Settings</string>
+    <string name="tile_on">On</string>
+    <string name="tile_off">Off</string>
+    <string name="tile_paused_until">Paused until %s</string>
+    <string name="tile_paused_hint">Tap for more time</string>
 
     <!-- Tarjeta de permisos -->
     <string name="setup_title">Permissions needed</string>
